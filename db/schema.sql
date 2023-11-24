@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS icantbelieveitsnottwitter_db;
+DROP DATABASE IF EXISTS crud_talker_db;
 
-CREATE DATABASE icantbelieveitsnottwitter_db;
+CREATE DATABASE crud_talker_db;
