@@ -1,6 +1,8 @@
 const express = require(`express`);
 const router = express.Router();
-const {User, Message, Friend, Conversation} = require(`../models`);
+
+const userRoutes = require(`./userRoutes`)
+router.use(`/api/users`,userRoutes);
 
 
 
