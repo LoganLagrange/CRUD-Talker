@@ -1,8 +1,13 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-const bcrypt = require(`bcrypt`);
+const bcrypt = require('bcrypt');
 
-class User extends Model {}
+class User extends Model {
+  // check if an unhashed password entered by the user (inoput) can be compared to the hashed password stored in the database
+  checkPassword(loginPw) {
+    return bcrypt.compareSync(loginPw, this.password);
+  }
+}
 
 User.init(
   {
@@ -36,11 +41,17 @@ User.init(
     freezeTableName: true,
     underscored: true,
     modelName: 'user',
-    hooks:{
-      beforeCreate: userObj=>{
-        userObj.password = bcrypt.hashSync(userObj.password,10);
-        return userObj;
-      }
+    hooks: {
+      // Hook to hash the password before saving a user
+      beforeCreate: async (newUserData) => {
+        newUserData.password = await bcrypt.hash(newUserData.password, 10);
+        return newUserData;
+      },
+      // Hook to hash the password before updating a user
+      beforeUpdate: async (updatedUserData) => {
+        updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+        return updatedUserData;
+      },
     }
   }
 );
