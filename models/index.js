@@ -14,6 +14,14 @@ Message.belongsTo(Conversation, {
 });
 Conversation.hasMany(Message);
 
+// User conversation junction table
+Conversation.belongsToMany(User,{
+    through:"UsersConversations"
+});
+User.belongsToMany(Conversation,{
+    through:"UsersConversations"
+});
+
 module.exports = {
     User,
     Message,

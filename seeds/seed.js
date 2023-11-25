@@ -44,6 +44,7 @@ const conversationData = [
 
 const seedMe = async()=>{
     await sequelize.sync({force:true});
+    
     const dbUsers = await User.bulkCreate(userData,{
         individualHooks: true
     });
@@ -51,12 +52,14 @@ const seedMe = async()=>{
 
     const dbConversation = await Conversation.bulkCreate(conversationData);
     console.table(dbConversation.map(conversation=>conversation.toJSON()));
-    
+
     const dbMessage = await Message.bulkCreate(messageData);
     console.table(dbMessage.map(message=>message.toJSON()));
 
-    
-    
+    await dbUsers[0].addConversation(1);
+
+    await dbConversation[0].addUsers([1,2]);
+
     process.exit(0);
 }
 
