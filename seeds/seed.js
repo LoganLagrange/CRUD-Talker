@@ -31,7 +31,7 @@ const userData = [
 const messageData = [
     {
         content: `Hello everyone`,
-        sender_id: 1,
+        userId: 1,
         conversation_id: 1
     }
 ]

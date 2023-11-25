@@ -15,13 +15,6 @@ Message.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    sender_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'user',
-        key: 'id',
-      },
-    },
     conversation_id: {
       type: DataTypes.INTEGER,
       references: {
