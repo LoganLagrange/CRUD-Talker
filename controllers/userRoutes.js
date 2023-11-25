@@ -65,26 +65,29 @@ router.post(`/`,(req,res) => {
 // POST route for user login
 router.post('/login', async (req, res) => {
     try {
-      const foundUser = await User.findOne({
-        where: {
-          username: req.body.username, // username is used for login is ASSUMED
-      }});
-  
-      if (!foundUser) {
-        return res.status(401).json({ message: 'Incorrect username or password!' });
-      } else if (!bcrypt.compareSync(req.body.password,foundUser.password)){
-        return res.status(401).json({ message: 'Incorrect username or password!' });
-      }
-      req.session.user = {
-        id:foundUser.id,
-        username:foundUser.username
-      }
-      res.json(foundUser);
+        const foundUser = await User.findOne({
+            where: {
+                username: req.body.username, // Assuming username is used for login
+            }
+        });
+
+        if (!foundUser) {
+            return res.status(401).json({ message: 'Incorrect username or password!' });
+        } else if (!foundUser.checkPassword(req.body.password)) {
+            return res.status(401).json({ message: 'Incorrect username or password!' });
+        }
+
+        req.session.user = {
+            id: foundUser.id,
+            username: foundUser.username
+        };
+
+        res.json(foundUser);
     } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
+        console.log(err);
+        res.status(500).json(err);
     }
-  });
+});
   
   // POST route for user logout
   router.post('/logout', (req, res) => {
