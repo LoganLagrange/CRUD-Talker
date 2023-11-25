@@ -30,8 +30,8 @@ router.get(`/:id`,(req,res) => {
 router.post(`/`,(req,res) => {
     Message.create({
         content:req.body.content,
-        user_id:req.session.user.id,
-        conversation_id:req.body.conversation_id
+        userId:req.session.user.id,
+        conversationId:req.body.conversation_id
     }).then(dbMessages => {
         res.json(dbMessages)
     }).catch(err => {
