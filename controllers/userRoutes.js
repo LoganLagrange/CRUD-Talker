@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require(`bcrypt`);
 const { User } = require('../models'); // Imports the User model
 
 // GET all users for homepage
@@ -51,8 +52,11 @@ router.post(`/`,(req,res) => {
     email:req.body.email,
     password:req.body.password,
     name:req.body.name
-  }).then(dbUsers=>{
-    res.json(dbUsers)
+  }).then(newUser=>{
+    req.session.user = {
+      id:newUser.id
+    }
+    res.json(newUser)
   }).catch(err=>{
     res.status(500).json({msg:`Server Error!`,err});
   })
@@ -69,6 +73,8 @@ router.post('/login', async (req, res) => {
       if (!dbUserData) {
         res.status(400).json({ message: 'Incorrect username or password!' });
         return;
+      } else if (){
+
       }
   
       const validPassword = await dbUserData.checkPassword(req.body.password); // TODO MAKE SURE WE HAVE  CHECKPASSWORD METHOD IN USER MODEL
