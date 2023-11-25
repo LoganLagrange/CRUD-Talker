@@ -86,14 +86,23 @@ router.post('/login', async (req, res) => {
     }
   });
   
-  // POST route for user logout
-  router.post('/logout', (req, res) => {
-    if (req.session) {
-      req.session.destroy();
-      res.json({msg:`Logged Out!`})
-    } else {
-      res.status(404).end();
-    }
-  });
+// POST route for user logout
+router.post('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        // error case
+        console.error('asychnronous session destruction occured', err);
+        res.status(500).json({ message: 'Error during logout' });
+      } else {
+        // logout successful
+        res.status(200).json({ message: 'Logout Successful' });
+      }
+    });
+  } else {
+    // session timeout case
+    res.status(404).json({ message: 'No active session found' });
+  }
+});
   
   module.exports = router;
