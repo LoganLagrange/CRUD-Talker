@@ -65,33 +65,21 @@ router.post(`/`,(req,res) => {
 // POST route for user login
 router.post('/login', async (req, res) => {
     try {
-      const dbUserData = await User.findOne({
+      const foundUser = await User.findOne({
         where: {
           username: req.body.username, // username is used for login is ASSUMED
       }});
   
-      if (!dbUserData) {
-        res.status(400).json({ message: 'Incorrect username or password!' });
-        return;
-      } else if (){
-
+      if (!foundUser) {
+        return res.status(401).json({ message: 'Incorrect username or password!' });
+      } else if (!bcrypt.compareSync(req.body.password,foundUser.password)){
+        return res.status(401).json({ message: 'Incorrect username or password!' });
       }
-  
-      const validPassword = await dbUserData.checkPassword(req.body.password); // TODO MAKE SURE WE HAVE  CHECKPASSWORD METHOD IN USER MODEL
-  
-      if (!validPassword) {
-        res.status(400).json({ message: 'Incorrect username or password!' });
-        return;
+      req.session.user = {
+        id:foundUser.id,
+        username:foundUser.username
       }
-  
-      // Express-Session for handling sessions
-      req.session.save(() => {
-        req.session.userId = dbUserData.id;
-        req.session.username = dbUserData.username;
-        req.session.loggedIn = true;
-  
-        res.json({ user: dbUserData, message: 'You are now logged in!' });
-      });
+      res.json(foundUser);
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -100,7 +88,7 @@ router.post('/login', async (req, res) => {
   
   // POST route for user logout
   router.post('/logout', (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session) {
       req.session.destroy(() => {
         res.status(204).end();
       });
