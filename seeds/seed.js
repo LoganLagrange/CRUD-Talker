@@ -1,5 +1,5 @@
 const sequelize = require(`../config/connection`);
-const {User} = require(`../models`);
+const {User, Message, Conversation} = require(`../models`);
 
 const userData = [
     {
@@ -28,12 +28,35 @@ const userData = [
     }
 ]
 
+const messageData = [
+    {
+        content: `Hello everyone`,
+        sender_id: 1,
+        conversation_id: 1
+    }
+]
+
+const conversationData = [
+    {
+        conversationName: `Test Conversation`
+    }
+]
+
 const seedMe = async()=>{
     await sequelize.sync({force:true});
     const dbUsers = await User.bulkCreate(userData,{
         individualHooks: true
     });
     console.table(dbUsers.map(user=>user.toJSON()));
+
+    const dbConversation = await Conversation.bulkCreate(conversationData);
+    console.table(dbConversation.map(conversation=>conversation.toJSON()));
+    
+    const dbMessage = await Message.bulkCreate(messageData);
+    console.table(dbMessage.map(message=>message.toJSON()));
+
+    
+    
     process.exit(0);
 }
 
