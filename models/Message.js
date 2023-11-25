@@ -15,10 +15,6 @@ Message.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    timestamp: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
     sender_id: {
       type: DataTypes.INTEGER,
       references: {
