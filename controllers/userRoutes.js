@@ -12,11 +12,12 @@ router.get('/', async (req, res) => {
     const users = dbUserData.map((user) =>
       user.get({ plain: true })
     );
+    res.json(dbUserData);
     // Send over the 'loggedIn' session variable to the 'homepage' template
-    res.render('homepage', {
-      users,
-      loggedIn: req.session.loggedIn,
-    });
+    // res.render('homepage', {
+    //   users,
+    //   loggedIn: req.session.loggedIn,
+    // });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -33,12 +34,28 @@ router.get('/:id', async (req, res) => {
     }
 
     const user = dbUserData.get({ plain: true });
+    res.json(dbUserData);
     // Send over the 'loggedIn' session variable to the 'user' template   TODO MAKE SURE THE USER TEMPLATE HAS A loggedIn variable
-    res.render('user', { user, loggedIn: req.session.loggedIn });
+    // res.render('user', { user, loggedIn: req.session.loggedIn });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
+});
+
+// CREATE new user
+router.post(`/`,(req,res) => {
+  console.log(req.body);
+  User.create({
+    username:req.body.username,
+    email:req.body.email,
+    password:req.body.password,
+    name:req.body.name
+  }).then(dbUsers=>{
+    res.json(dbUsers)
+  }).catch(err=>{
+    res.status(500).json({msg:`Server Error!`,err});
+  })
 });
 
 // POST route for user login
