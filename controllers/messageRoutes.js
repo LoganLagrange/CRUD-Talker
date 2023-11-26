@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Message, User } = require('../models'); // Imports the Message model
-const userAuth = require(`../middlewear/userAuth`); //Imports user authentication middlewear
+const userAuth = require(`../middleware/userAuth`); //Imports user authentication middlewear
 
 // GET all messages
 router.get(`/`,(req,res) => {
