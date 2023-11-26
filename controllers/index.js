@@ -7,5 +7,7 @@ router.use(`/api/users`,userRoutes);
 const messageRoutes = require(`./messageRoutes`)
 router.use(`/api/messages`,messageRoutes);
 
+const conversationRoutes = require(`./conversationRoutes`)
+router.use(`/api/conversations`,conversationRoutes);
 
 module.exports = router;
