@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000'); // Update with your server URL
+const socket = io('http://localhost:3000'); // APP SERVER ID GOES HERE
 
 socket.on('connect', () => {
     console.log('Connected to server');
