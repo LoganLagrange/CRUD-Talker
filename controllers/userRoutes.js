@@ -64,37 +64,48 @@ router.post(`/`,(req,res) => {
 
 // POST route for user login
 router.post('/login', async (req, res) => {
-    try {
+  try {
       const foundUser = await User.findOne({
-        where: {
-          username: req.body.username, // username is used for login is ASSUMED
-      }});
-  
+          where: {
+              username: req.body.username // Assuming username is used for login,
+          }
+      });
+
       if (!foundUser) {
-        return res.status(401).json({ message: 'Incorrect username or password!' });
-      } else if (!bcrypt.compareSync(req.body.password,foundUser.password)){
-        return res.status(401).json({ message: 'Incorrect username or password!' });
+          return res.status(401).json({ message: 'Incorrect username or password!' });
+      } else if (!foundUser.checkPassword(req.body.password)) {
+          return res.status(401).json({ message: 'Incorrect username or password!' });
       }
+
       req.session.user = {
-        id:foundUser.id,
-        username:foundUser.username
-      }
+          id: foundUser.id,
+          username: foundUser.username
+      };
+
       res.json(foundUser);
-    } catch (err) {
+  } catch (err) {
       console.log(err);
       res.status(500).json(err);
-    }
-  });
+  }
+});
   
-  // POST route for user logout
-  router.post('/logout', (req, res) => {
-    if (req.session) {
-      req.session.destroy(() => {
-        res.status(204).end();
-      });
-    } else {
-      res.status(404).end();
-    }
-  });
+// POST route for user logout
+router.post('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        // error case
+        console.error('asychnronous session destruction occured', err);
+        res.status(500).json({ message: 'Error during logout' });
+      } else {
+        // logout successful
+        res.status(200).json({ message: 'Logout Successful' });
+      }
+    });
+  } else {
+    // session timeout case
+    res.status(404).json({ message: 'No active session found' });
+  }
+});
   
   module.exports = router;
