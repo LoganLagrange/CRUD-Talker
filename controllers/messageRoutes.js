@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Message, User } = require('../models'); // Imports the Message model
+const userAuth = require(`../middlewear/userAuth`); //Imports user authentication middlewear
 
 // GET all messages
 router.get(`/`,(req,res) => {
@@ -27,7 +28,7 @@ router.get(`/:id`,(req,res) => {
 })
 
 // CREATE new message
-router.post(`/`,(req,res) => {
+router.post(`/`,userAuth,(req,res) => {
     Message.create({
         content:req.body.content,
         userId:req.session.user.id,

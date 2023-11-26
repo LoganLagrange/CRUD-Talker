@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Message, Conversation, User } = require('../models'); // Imports the Message and Conversation model
+const userAuth = require(`../middlewear/userAuth`); //Imports user authentication middlewear
 
-// GET all messages
+// GET all conversations
 router.get(`/`,(req,res) => {
     Conversation.findAll().then(dbConversation => {
         res.json(dbConversation);
@@ -27,7 +28,7 @@ router.get(`/:id`,(req,res) => {
 })
 
 // CREATE new Conversation
-router.post(`/`,(req,res) => {
+router.post(`/`, userAuth, (req,res) => {
     Conversation.create({
         userId:req.session.user.id,
         conversationName:req.body.conversationName
@@ -39,7 +40,7 @@ router.post(`/`,(req,res) => {
 });
 
 // DELETE conversation
-router.delete(`/:id`,(req,res) => {
+router.delete(`/:id`, userAuth, (req,res) => {
     Conversation.destroy({
         where: {
             id:req.params.id
