@@ -1,3 +1,5 @@
+const saveMessage = require(`../middleware/saveMessage`)
+
 module.exports = function (io) {
     io.on('connection', (socket) => {
         console.log('A user connected');
@@ -8,6 +10,7 @@ module.exports = function (io) {
 
 
             //TODO SAVE THE MESSAGE TO THE DB INSTEAD OF A SIMPLE EMIT
+            saveMessage(msg);
         
 
             // Broadcast
