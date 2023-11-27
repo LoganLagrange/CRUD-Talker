@@ -1,3 +1,5 @@
+const saveMessage = require("../middleware/saveMessage");
+
 const socket = io('http://localhost:3000'); // APP SERVER ID GOES HERE
 
 socket.on('connect', () => {
@@ -18,5 +20,6 @@ document.getElementById('messageForm').addEventListener('submit', (e) => {
     const message = messageInput.value;
     messageInput.value = '';
 
+    // saveMessage(message);
     socket.emit('chat message', message);
 });
