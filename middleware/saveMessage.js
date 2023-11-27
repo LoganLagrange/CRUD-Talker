@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 
 function saveMessage(msg) {
     console.log(`function trigger`);

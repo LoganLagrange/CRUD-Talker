@@ -28,7 +28,7 @@ router.get(`/:id`,(req,res) => {
 })
 
 // CREATE new message
-router.post(`/`, userAuth,(req,res) => {
+router.post(`/`,userAuth,(req,res) => {
     Message.create({
         content:req.body.content,
         userId:req.session.user.id,
