@@ -1,5 +1,5 @@
- function loginFunc(username){
-    url = process.env.NODE_ENV.join(`/api/users/login`)
+ function loginFunc(username, password){
+    url = `http://` + process.env.NODE_ENV + `api/users/login`
     
     const user = {
         username: username,

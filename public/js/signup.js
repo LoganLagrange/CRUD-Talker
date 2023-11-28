@@ -12,10 +12,11 @@ signupForm.addEventListener(`submit`, (e) => {
     const signupPassword2 = document.getElementById(`signup-pword2`);
 
     if (signupPassword1.value !== signupPassword2.value) {
+        // INSERT PAGE INTERACTION FOR PASSWORD MISMATCH
         console.log(`learn to spell, idiot`);
     }
 
-    const url = `localhost:3000/api/users`
+    const url = `http://` + process.env.NODE_ENV + `/api/users`;
     const newUser = {
         username:signupUsername.value,
         email:signupEmail.value,
