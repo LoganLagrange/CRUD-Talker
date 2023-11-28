@@ -38,7 +38,7 @@ const messageData = [
 
 const conversationData = [
     {
-        conversationName: `Test Conversation`
+        conversation_name: `Test Conversation`,
     }
 ]
 

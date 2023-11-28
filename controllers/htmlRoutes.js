@@ -14,4 +14,8 @@ router.get('/registration',(req,res)=>{
     res.render("registration_page")
 })
 
+<<<<<<< HEAD
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> dev

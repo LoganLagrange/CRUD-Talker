@@ -18,6 +18,15 @@ Conversation.init(
     conversation_name: {
       type: DataTypes.STRING,
       allowNull: true,
+
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'User', // or the name of your user table
+        key: 'id',
+        },
+      },
+      
     }
   },
   {
