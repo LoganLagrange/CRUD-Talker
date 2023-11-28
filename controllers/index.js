@@ -10,4 +10,7 @@ router.use(`/api/messages`,messageRoutes);
 const conversationRoutes = require(`./conversationRoutes`)
 router.use(`/api/conversations`,conversationRoutes);
 
+const htmlRoutes = require(`./htmlRoutes`)
+router.use(`api/`, htmlRoutes);
+
 module.exports = router;

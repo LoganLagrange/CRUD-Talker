@@ -28,15 +28,29 @@ router.get(`/:id`,(req,res) => {
 })
 
 // CREATE new message
-router.post(`/`,userAuth,(req,res) => {
+router.post(`/`,(req,res) => {
     Message.create({
         content:req.body.content,
   //      userId:req.session.user.id,
+        // userId:req.session.user.id,
         conversationId:req.body.conversation_id
     }).then(dbMessages => {
         res.json(dbMessages)
     }).catch(err => {
         res.status(500).json({msg:`Server error!`,err});
+    })
+});
+
+// DELETE message
+router.delete(`/:id`, userAuth, (req,res) => {
+    Message.destroy({
+        where: {
+            id:req.params.id
+        }
+    }).then(dbMessage => {
+        res.json(dbMessage)
+    }).catch(err => {
+        res.status(500).json({msg:`Server error!`,err})
     })
 });
 

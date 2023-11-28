@@ -1,7 +1,8 @@
 
 function saveMessage(msg) {
     console.log(`function trigger`);
-    const url = `http://localhost:3000/api/messages`
+    const url = `http://` + process.env.NODE_ENV + `/api/messages`
+    console.log(url);
     const message = {
         content: msg,
         conversation_id: "2"
