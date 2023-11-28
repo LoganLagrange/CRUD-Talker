@@ -2,7 +2,8 @@
     url = process.env.NODE_ENV.join(`/api/users/login`)
     
     const user = {
-        username: username
+        username: username,
+        password: password
     }
     fetch(url, {
         method: `POST`,

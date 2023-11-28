@@ -1,3 +1,5 @@
+const loginFunc = require(`../../middleware/login`);
+
 const signupForm = document.getElementById(`signup-form`);
 
 signupForm.addEventListener(`submit`, (e) => {
@@ -33,5 +35,5 @@ signupForm.addEventListener(`submit`, (e) => {
         console.error(err);
     });
 
-
+    loginFunc(signupUsername.value, signupPassword1.value);
 })
