@@ -40,4 +40,17 @@ router.post(`/`,userAuth,(req,res) => {
     })
 });
 
+// DELETE message
+router.delete(`/:id`, userAuth, (req,res) => {
+    Message.destroy({
+        where: {
+            id:req.params.id
+        }
+    }).then(dbMessage => {
+        res.json(dbMessage)
+    }).catch(err => {
+        res.status(500).json({msg:`Server error!`,err})
+    })
+});
+
 module.exports = router;
