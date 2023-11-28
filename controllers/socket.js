@@ -9,8 +9,10 @@ module.exports = function (io) {
             console.log('message received:', msg);
 
 
-            //TODO SAVE THE MESSAGE TO THE DB INSTEAD OF A SIMPLE EMIT
-            saveMessage(msg);
+            //TODO 
+            //change the 1 to be dynamic
+
+            saveMessage(msg,1);
         
 
             // Broadcast
