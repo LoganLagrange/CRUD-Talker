@@ -31,7 +31,7 @@ router.get(`/:id`,(req,res) => {
 router.post(`/`,userAuth,(req,res) => {
     Message.create({
         content:req.body.content,
-        userId:req.session.user.id,
+  //      userId:req.session.user.id,
         conversationId:req.body.conversation_id
     }).then(dbMessages => {
         res.json(dbMessages)
