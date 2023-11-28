@@ -16,7 +16,7 @@ signupForm.addEventListener(`submit`, (e) => {
     const url = `localhost:3000/api/users`
     const newUser = {
         username:signupUsername.value,
-        email:signupName.value,
+        email:signupEmail.value,
         password:signupPassword1.value,
         name:signupName.value
     }
@@ -33,5 +33,5 @@ signupForm.addEventListener(`submit`, (e) => {
         console.error(err);
     });
 
-    
+
 })
