@@ -2,21 +2,13 @@ const loginFunc = require(`../../middleware/login`);
 
 const signupForm = document.getElementById(`signup-form`);
 
-signupForm.addEventListener(`submit`, (e) => {
-    e.preventDefault();
-
-    
-    if (signupPassword1.value !== signupPassword2.value) {
-        // INSERT PAGE INTERACTION FOR PASSWORD MISMATCH
-        console.log(`learn to spell, idiot`);
-    }
-
+function signup(newUserData){    
     const url = `http://${process.env.NODE_ENV}/api/users`;
     const newUser = {
-        username:signupUsername.value,
-        email:signupEmail.value,
-        password:signupPassword1.value,
-        name:signupName.value
+        username:newUserData.username,
+        email:newUserData.email,
+        password:newUserData.password1,
+        name:newUserData.name
     }
     fetch(url, {
         method: `POST`,
@@ -32,4 +24,6 @@ signupForm.addEventListener(`submit`, (e) => {
     });
 
     loginFunc(signupUsername.value, signupPassword1.value);
-})
+}
+
+module.exports = signup();
