@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <title>Socket.IO Test</title>
     <head>
 <body>
     <h1>Socket.IO Test Client</h1>
     
-    <!-- Join Room Form -->
-    <form id="joinRoomForm">
-        <input type="number" id="roomNumberInput" placeholder="Enter Room Number" />
-        <button type="submit">Join Room</button>
-    </form>
-
     <!-- Message Form -->
     <form id="messageForm">
         <input type="text" id="messageInput" placeholder="Type a message" />
@@ -23,12 +18,14 @@
     <!-- Messages Log -->
     <div id="messages"></div>
 
-    <!-- Load the Socket.IO client library 
+<!-- Load the Socket.IO client library 
+    
     IMPORTANT THIS MUST COME FIRST -->
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
-    <!-- Load client script -->
-    <script src="/socket-client.js"></script>
+<!-- Load client script -->
+<script src="/socket-client.js"></script>
 
 </body>
 </html>
