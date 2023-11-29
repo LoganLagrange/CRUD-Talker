@@ -10,7 +10,7 @@ loginForm.addEventListener(`submit`, (e) =>  {
 })
 
 function loginFunc(username, password){
-    url = `http://lcoalhost:3000/api/users/login`
+    url = `http://localhost:3000/api/users/login`
     
     const user = {
         username: username,
