@@ -31,14 +31,14 @@ const userData = [
 const messageData = [
     {
         content: `Hello everyone`,
-        userId: 1,
+        user_id: 1,
         conversation_id: 1
     }
 ]
 
 const conversationData = [
     {
-        conversationName: `Test Conversation`
+        conversation_name: `Test Conversation`
     }
 ]
 
@@ -59,6 +59,8 @@ const seedMe = async()=>{
     await dbUsers[0].addConversation(1);
 
     await dbConversation[0].addUsers([1,2]);
+
+    await dbConversation[0].setOwner(1);
 
     process.exit(0);
 }
