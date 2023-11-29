@@ -1,10 +1,12 @@
 const express = require('express');
+const exphbs = require(`express-handlebars`);
 const http = require('http'); // Import http module for creating HTTP server
 const { Server } = require('socket.io'); // Import Server class from socket.io
 const sequelize = require('./config/connection');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const setupSocket = require('./controllers/socket'); // Import the Socket.IO setup
+
 
 const allRoutes = require('./controllers');
 
@@ -33,9 +35,9 @@ app.use(express.json());
  app.use(express.static('public'));
 
 // Uncomment and configure if you plan to use Handlebars
-// const hbs = exphbs.create({});
-// app.engine('handlebars', hbs.engine);
-// app.set('view engine', 'handlebars');
+const hbs = exphbs.create({});
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 app.use('/', allRoutes);
 
