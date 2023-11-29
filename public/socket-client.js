@@ -24,3 +24,14 @@ document.getElementById('messageForm').addEventListener('submit', (e) => {
     // saveMessage(message);
     socket.emit('chat message', message);
 });
+
+// Join Room Event Listener
+document.getElementById('joinRoomForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const roomNumberInput = document.getElementById('roomNumberInput');
+    const roomNumber = roomNumberInput.value;
+    roomNumberInput.value = '';
+
+    // Emit the room number to the server
+    socket.emit('join room', roomNumber);
+});
