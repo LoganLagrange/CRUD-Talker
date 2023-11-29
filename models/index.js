@@ -15,6 +15,15 @@ Message.belongsTo(Conversation, {
 Conversation.hasMany(Message);
 
 // User conversation junction table
+Conversation.belongsTo(User, {
+    as: `Owner`,
+    foreignKey: `ownerId`,
+    onDelete: `SET NULL`
+});
+User.hasMany(Conversation, {
+    foreignKey: `ownerId`
+});
+
 Conversation.belongsToMany(User,{
     through:"UsersConversations"
 });
