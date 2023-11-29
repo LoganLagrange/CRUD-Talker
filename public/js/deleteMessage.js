@@ -1,8 +1,7 @@
 
-function deleteMessage(targetMsg) {
+function deleteMessage(messageId) {
 
-
-    const url = `http://${process.env.NODE_ENV}/api/message${messageidhere}`;
+        const url = `http://${process.env.NODE_ENV}/api/message${messageId}`;
     fetch(url, {
         method: `DELETE`,
         headers: {
