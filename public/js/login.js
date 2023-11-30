@@ -6,6 +6,7 @@ const loginUsername = document.getElementById(`login-username`);
 const loginPassword  = document.getElementById(`login-password`);
 
 loginForm.addEventListener(`submit`, (e) =>  {
+    e.preventDefault();
     loginFunc(loginUsername, loginPassword);
 })
 
