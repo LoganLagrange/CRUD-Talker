@@ -12,10 +12,24 @@ router.get(`/`,(req,res) => {
     })
 })
 
+// GET all conversations user owns
 router.get(`/owner/`, (req,res) => {
     Conversation.findAll({
         where: {
-            ownerId: 1
+            ownerId: req.session.user.id
+        }
+    }).then(dbConversation => {
+        res.json(dbConversation);
+    }).catch(err => {
+        res.status(500).json({msg:`Server Error!`, err});
+    })
+})
+
+// GET all conversations user is in
+router.get(`/isin/`, (req,res) => {
+    Conversation.findAll({
+        where: {
+            userId: req.session.user.id
         }
     }).then(dbConversation => {
         res.json(dbConversation);
