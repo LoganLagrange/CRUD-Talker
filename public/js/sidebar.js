@@ -26,29 +26,29 @@ function renderYourChats(chats) {
     }
 }
 
-const otherUrl = `http://localhost:3000/api/conversations/isin`
-fetch(otherUrl, {
-    method: `GET`,
-    headers: {
-        "Content-Type": "application/json",
-    },
+// const otherUrl = `http://localhost:3000/api/conversations/isin`
+// fetch(otherUrl, {
+//     method: `GET`,
+//     headers: {
+//         "Content-Type": "application/json",
+//     },
 
-}).then(res => res.json())
-    .then(res => {
-        console.log(res)
-        renderOtherChats(res);
-    }).catch(err => {
-        console.error(err);
-    });
+// }).then(res => res.json())
+//     .then(res => {
+//         console.log(res)
+//         renderOtherChats(res);
+//     }).catch(err => {
+//         console.error(err);
+//     });
 
-function renderOtherChats(chats) {
-    if (chats) {
-        chats.forEach(item => {
-            if (item.ownerId !== item.userId) {
-                const otherChatsLi = document.createElement(`li`);
-                otherChatsLi.textContent = `${item.conversation_name}`
-                otherChatsOl.appendChild(otherChatsLi);
-            }
-        });
-    }
-}
+// function renderOtherChats(chats) {
+//     if (chats) {
+//         chats.forEach(item => {
+//             if (item.ownerId !== item.userId) {
+//                 const otherChatsLi = document.createElement(`li`);
+//                 otherChatsLi.textContent = `${item.conversation_name}`
+//                 otherChatsOl.appendChild(otherChatsLi);
+//             }
+//         });
+//     }
+// }

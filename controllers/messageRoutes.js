@@ -12,6 +12,19 @@ router.get(`/`,(req,res) => {
     })
 })
 
+// GET all messages for given conversation
+router.get(`/inconvo/`, (req,res) => {
+    Message.findAll({
+        where: {
+            conversationId: 1 //TODO: Add correct conversation
+        }
+    }).then(dbConversation => {
+        res.json(dbConversation);
+    }).catch(err => {
+        res.status(500).json({msg:`Server Error!`, err});
+    })
+})
+
 // GET one message
 router.get(`/:id`,(req,res) => {
     Message.findByPk(req.params.id,{
