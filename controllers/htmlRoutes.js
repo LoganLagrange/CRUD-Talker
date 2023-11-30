@@ -3,8 +3,8 @@ const router = express.Router();
 const { Conversation, Message, User, Friend } = require("../models");
 
 router.get("/",  (req,res)=>{
-    if(!req.session.user.id) {
-        console.log(req.session.user.id)
+    if(!req.session.user) {
+        console.log(req.session.user)
         const imageUrl = `../img/logo.png`
         res.render("landing_page", {imageUrl});
     } else {
