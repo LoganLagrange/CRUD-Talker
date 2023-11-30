@@ -25,8 +25,11 @@ function loginFunc(username, password){
         body: JSON.stringify(user),
     }).then(res => res.json())
     .then(res => {
-        console.log(res);
+        const newUrl = `http://localhost:3000/`
+        window.location.href = newUrl;
     }) .catch(err => {
         console.error(err);
     });
+
+    
 }

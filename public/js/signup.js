@@ -39,10 +39,34 @@ function signup(newUserData){
         body: JSON.stringify(newUser),
     }).then(res => res.json())
     .then(res => {
-        console.log(res);
+        loginFunc(signupUsername.value, signupPassword1.value);
     }) .catch(err => {
         console.error(err);
     });
 
-    loginFunc(signupUsername.value, signupPassword1.value);
+//     loginFunc(signupUsername.value, signupPassword1.value);
+}
+
+function loginFunc(username, password){
+    const url = `http://localhost:3000/api/users/login`
+    
+    const user = {
+        username: username,
+        password: password
+    }
+    fetch(url, {
+        method: `POST`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    }).then(res => res.json())
+    .then(res => {
+        const newUrl = `http://localhost:3000/`
+        window.location.href = newUrl;
+    }) .catch(err => {
+        console.error(err);
+    });
+
+    
 }
