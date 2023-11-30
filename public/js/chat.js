@@ -1,4 +1,4 @@
-const chatOl = document.getElementById(`chat-ol`);
+const chatUl = document.getElementById(`chat-ol`);
 
 const chatUrl = `http://localhost:3000/api/messages/inconvo`
 fetch(chatUrl, {
@@ -20,7 +20,7 @@ function renderMessages(chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
             yourMessagesLi.textContent = `${item.content}`
-            chatOl.appendChild(yourMessagesLi);
+            chatUl.appendChild(yourMessagesLi);
         });
     }
 }
