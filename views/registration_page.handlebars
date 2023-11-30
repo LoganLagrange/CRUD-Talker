@@ -1,11 +1,21 @@
  <body class="container box has-background-white p-5 has-text-centered">
-    <form class="is-flex-direction-column">
+    <section>
+        <img id="main-page-logo" src="{{imageUrl}}" alt="CRUD-Talker Logo">
+        <h1 id="mainf-page-heading">CRUD-Talker</h1>
+    </section>
+    <form class="is-flex-direction-column" id="signup-form">
         <div class="mb-4 p-2 container box">
-            <input type="text" placeholder="Username" name="username" required>
-            <input type="email" placeholder="Email" name="email" required>
-            <input type="password" placeholder="Password" name="password" required>
-            <input type="password" placeholder="Confirm Password" name="confirm_password" required>
+            <input type="text" placeholder="Username" name="username" id="signup-username" required>
+            <input type="text" placeholder="Name" name="name" id="signup-name" required>
+            <input type="email" placeholder="Email" name="email" id="signup-email" required>
+            <input type="password" placeholder="Password" name="password" id="signup-pword1" required>
+            <input type="password" placeholder="Confirm Password" name="confirm_password" id="signup-pword2" required>
         </div>
         <button class="button is-green is-outlined p-2" type="submit">SIGN UP</button>
     </form>
+    
+    <script type="module" src="/js/signup.js"></script>
+    
 </body>
+
+
