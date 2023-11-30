@@ -1,10 +1,29 @@
- <div class="container box is-three-quarters m-auto has-background-white p-4">
-    <div class="chat-messages">
+<body>
+    <aside>
+        <div id="your-chats-div">
+            <h3>Your Chats</h3>
+            <ol id="your-chats-ol">
+
+            </ol>
+        </div>
+        <div id="other-chats-div">
+            <h3>Other Chats</h3>
+            <ol id="other-chats-ol">
+
+            </ol>
+
+        </div>
+    </aside>
+
+    <div class="container box is-three-quarters m-auto has-background-white p-4">
+        <div class="chat-messages">
             <!-- Messages will appear here -->
             {{> chat}}
+        </div>
+        <form>
+            <input type="text" placeholder="Type a message..." name="message" required>
+            <button type="submit">SEND</button>
+        </form>
     </div>
-    <form>
-        <input type="text" placeholder="Type a message..." name="message" required>
-        <button type="submit">SEND</button>
-    </form>
- </div>
+    <script src="./js/sidebar.js"></script>
+</body>
