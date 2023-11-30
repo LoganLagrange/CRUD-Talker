@@ -7,11 +7,11 @@ const loginPassword  = document.getElementById(`login-password`);
 
 loginForm.addEventListener(`submit`, (e) =>  {
     e.preventDefault();
-    loginFunc(loginUsername, loginPassword);
+    loginFunc(loginUsername.value, loginPassword.value);
 })
 
 function loginFunc(username, password){
-    url = `http://localhost:3000/api/users/login`
+    const url = `http://localhost:3000/api/users/login`
     
     const user = {
         username: username,
