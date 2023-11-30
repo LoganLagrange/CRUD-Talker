@@ -12,7 +12,7 @@ router.get(`/`,(req,res) => {
     })
 })
 
-router.get(`/owner/:id`, (req,res) => {
+router.get(`/owner/`, (req,res) => {
     Conversation.findAll({
         where: {
             ownerId: req.session.user.id

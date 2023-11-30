@@ -1,7 +1,7 @@
 const yourChatsOl = document.getElementById(`your-chats-ol`);
 const otherChatsOl = document.getElementById(`other-chats-ol`);
 
-const url = `http://localhost:3000/api/conversations`
+const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
     method: `GET`,
     headers: {
