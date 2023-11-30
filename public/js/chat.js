@@ -1,4 +1,4 @@
-const chatUl = document.getElementById(`chat-ol`);
+const chatUl = document.getElementById(`chat-ul`);
 
 const chatUrl = `http://localhost:3000/api/messages/inconvo`
 fetch(chatUrl, {
