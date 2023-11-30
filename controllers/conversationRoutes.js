@@ -12,6 +12,18 @@ router.get(`/`,(req,res) => {
     })
 })
 
+router.get(`/owner/:id`, (req,res) => {
+    Conversation.findAll({
+        where: {
+            ownerId: req.session.user.id
+        }
+    }).then(dbConversation => {
+        res.json(dbConversation);
+    }).catch(err => {
+        res.status(500).json({msg:`Server Error!`, err});
+    })
+})
+
 // GET one Conversation
 router.get(`/:id`,(req,res) => {
     Conversation.findByPk(req.params.id,{
