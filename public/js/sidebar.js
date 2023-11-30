@@ -7,11 +7,21 @@ fetch(url, {
     headers: {
         "Content-Type": "application/json",
     },
-    body: JSON.stringify(user),
+    
 }).then(res => res.json())
 .then(res => {
-    const newUrl = `http://localhost:3000/`
-    window.location.href = newUrl;
+    console.log(res)
+    renderYourChats(res);
 }) .catch(err => {
     console.error(err);
 });
+
+function renderYourChats(chats){
+    if(chats){
+        chats.forEach(item => {
+            const yourChatsLi = document.createElement(`li`);
+            yourChatsLi.textContent = `${item.conversation_name}`
+            yourChatsOl.appendChild(yourChatsLi);
+        });
+    }
+}

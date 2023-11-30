@@ -15,7 +15,7 @@ router.get(`/`,(req,res) => {
 router.get(`/owner/`, (req,res) => {
     Conversation.findAll({
         where: {
-            ownerId: req.session.user.id
+            ownerId: 1
         }
     }).then(dbConversation => {
         res.json(dbConversation);
