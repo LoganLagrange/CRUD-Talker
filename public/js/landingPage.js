@@ -7,3 +7,10 @@ function signupRedirect(){
     const url = `http://localhost:3000/registration`
     window.location.href = url;
 }
+
+landingPageLogin.addEventListener(`click`, loginRedirect)
+
+function loginRedirect(){
+    const url = `http://localhost:3000/login`
+    window.location.href = url;
+}

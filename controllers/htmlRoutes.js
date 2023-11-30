@@ -13,15 +13,17 @@ router.get("/",  (req,res)=>{
 })
 
 router.get("/login",(req,res)=>{
-    res.render("login_page")
+    const imageUrl = `../img/logo.png`
+    res.render("login_page", {imageUrl});
 })
 
 router.get('/conversations',(req,res)=>{
-    res.render("chat_room_page")
+    res.render("chat_room_page");
 })
 
 router.get('/registration',(req,res)=>{
-    res.render("registration_page")
+    const imageUrl = `../img/logo.png`
+    res.render("registration_page", {imageUrl});
 })
 
 module.exports = router;
