@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CRUD-Talker</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <nav class="nav">
+        {{#if session.user}}
+        <a class="nav-element" href="./login">Login</a>
+        <a class="nav-element" href="./registration">Sign Up</a>
+        {{else}}
+        <button class="logout-btn">Logout</button>
+        {{/if}}
+        
+    </nav>
     <main>
     {{{body}}}
     </main>
