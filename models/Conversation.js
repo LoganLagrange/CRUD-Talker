@@ -17,7 +17,7 @@ Conversation.init(
     },
     conversation_name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
 
     user_id: {
       type: DataTypes.INTEGER,

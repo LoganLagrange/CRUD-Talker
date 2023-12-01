@@ -19,7 +19,7 @@ document.getElementById(`roomSub`).addEventListener(`submit`, (e) => {
     const messageInput = document.getElementById(`roomSub`);
     const message = messageInput.value;
     messageInput.value = ``;
-    // saveMessage(message);
+    saveMessage(message);
     socket.emit(`chat message`, message);
    // socket.emit(`joinRoom`, roomNumber);
 });

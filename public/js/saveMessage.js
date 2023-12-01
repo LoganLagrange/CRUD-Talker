@@ -25,11 +25,11 @@
 
 // module.exports = saveMessage;
 
-const { Conversation, Message } = require('../models'); // Import models
+const { Conversation, Message } = require('../../models'); // Import models
 
 function saveMessage(msg, conversationId) {
     console.log(`function trigger`);
-    const url = `http://${process.env.NODE_ENV}/api/messages`;
+    const url = `http://localhost:3000/api/messages`;
     console.log(url);
 
     // Check if the conversation exists
