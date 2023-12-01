@@ -56,8 +56,8 @@ router.get(`/:id`,(req,res) => {
 // CREATE new Conversation
 router.post(`/`, userAuth, (req,res) => {
     Conversation.create({
-        userId:req.session.user.id,
-        conversationName:req.body.conversationName
+        ownerId:req.session.user.id,
+        conversation_name:req.body.conversationName
     }).then(dbConversations => {
         res.json(dbConversations)
     }).catch(err => {

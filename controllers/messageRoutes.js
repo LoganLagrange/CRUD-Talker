@@ -13,10 +13,10 @@ router.get(`/`,(req,res) => {
 })
 
 // GET all messages for given conversation
-router.get(`/inconvo/`, (req,res) => {
+router.get(`/inconvo/:id`, (req,res) => {
     Message.findAll({
         where: {
-            conversationId: 1 //TODO: Add correct conversation
+            conversationId: req.params.id
         }
     }).then(dbConversation => {
         res.json(dbConversation);
@@ -44,8 +44,7 @@ router.get(`/:id`,(req,res) => {
 router.post(`/`,(req,res) => {
     Message.create({
         content:req.body.content,
-  //      userId:req.session.user.id,
-        // userId:req.session.user.id,
+        userId:req.session.user.id,
         conversationId:req.body.conversation_id
     }).then(dbMessages => {
         res.json(dbMessages)

@@ -80,7 +80,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-const saveMessage = require(`../middleware/saveMessage`);
+
 
 const rooms = {};
 
@@ -104,12 +104,12 @@ module.exports = function (io) {
         });
 
         // Handling chat messages
-        socket.on('send-chat-message', (room, message) => {
+        socket.on('chat message', (room, message) => {
             // Save the message - modify the saveMessage function as necessary
-            saveMessage(message, socket.id);  // Assuming socket.id is the user's unique identifier
+              // Assuming socket.id is the user's unique identifier
 
             // Broadcast the message to others in the room
-            io.to(room).emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+            // io.to(room).emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
         });
 
         // Handling user disconnect
