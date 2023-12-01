@@ -8,7 +8,13 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const setupSocket = require('./controllers/socket'); // Import the Socket.IO setup
 
 
+
+// Imports and variables for integrated project
+
+const rooms = { }; // Stores chat rooms
+
 const allRoutes = require('./controllers');
+
 
 // Sets up the Express App
 const app = express();
@@ -40,6 +46,12 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use('/', allRoutes);
+
+// Route for the main page of the chat application
+app.get('/', (req, res) => {
+    res.render('index', { rooms: rooms });
+  });
+
 
 // Creating HTTP server from Express app
 const server = http.createServer(app); // Create HTTP server
