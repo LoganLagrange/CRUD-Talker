@@ -20,31 +20,33 @@
         </div>
     </aside>
 
-    <div class="container box is-three-quarters m-auto has-background-white p-4" id="chat-container">
+    <div class="container box is-three-quarters m-auto has-background-white p-4">
         <div class="columns is-centered" id="chat-page-logo">
             <div class="column is-half">
                 <img src="{{imageUrl}}" alt="logo" class="is-justify-content-center is-align-content-center">
             </div>
         </div>
-        
         <div class="chat-messages" id="chat-messages">
-    <div class="container box is-three-quarters m-auto has-background-white p-4" >
-        <div class="p-3 box" id="conversation-name-box">
-            <h3 id="conversation-name-heading"></h3>
-            <button class=" button is-danger fas fa-trash-alt" id="delete-conv-btn"></button>
-        </div>
-        
-        <div class="chat-messages" id="chat-container">
-            <!-- Messages will appear here -->
-            {{> chat}}
-        </div>
-        <form id="chat-form">
-            <input id="chat-input" type="text" placeholder="Type a message..." name="message" required>
-            <button class="button is-link is-outlined p-1" type="submit">SEND</button>
-        </form>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
-    <script src="./js/sidebar.js"></script>
-    
-    
+
+            <div class="p-3 box" id="conversation-name-box">
+                <h3 id="conversation-name-heading"></h3>
+                <button class=" button is-danger fas fa-trash-alt" id="delete-conv-btn"></button>
+            </div>
+
+            <div class="chat-messages" id="chat-container">>
+
+
+
+                <!-- Messages will appear here -->
+                {{> chat}}
+            </div>
+            <form id="chat-form">
+                <input id="chat-input" type="text" placeholder="Type a message..." name="message" required>
+                <button class="button is-link is-outlined p-1" type="submit">SEND</button>
+            </form>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+            <script src="./js/sidebar.js"></script>
+
+
 </body>

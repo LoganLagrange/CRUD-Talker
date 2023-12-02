@@ -19,6 +19,8 @@ const deleteConvBtn = document.getElementById(`delete-conv-btn`);
 
 deleteConvBtn.style.display = `none`;
 
+currentSess = sessionStorage.getItem(`userId`);
+
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
@@ -41,6 +43,7 @@ fetch(url, {
 function renderYourChats(chats) {
     if (chats) {
         chats.forEach(item => {
+            if(item.ownerId == currentSess) {
             const yourChatsLi = document.createElement(`li`);
             yourChatsLi.textContent = `${item.conversation_name}`
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
@@ -48,21 +51,20 @@ function renderYourChats(chats) {
             yourChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id, item.owner_id));
             yourChatsUl.appendChild(yourChatsLi);
+            }
         });
     }
 }
 
 // Event handler for clicking on the conversation
 // DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
-function conversationClick(conversation_name, roomId) {
+function conversationClick(conversationName, roomId, ownerId) {
     // set chat container to show up when conversation is clicked
     chatPageLogo.style.display = `none`;
     chatMessages.style.display = `block`;
     chatForm.style.display = `block`;
     
     console.log(`roomId:` + roomId);
-}
-function conversationClick(conversationName, roomId, ownerId) {
     conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
     fetchMessages(roomId);
@@ -251,9 +253,10 @@ fetch(otherUrl, {
 // render other chats function
 // renders chats user is in but does not own
 function renderOtherChats(chats) {
+    console.log(chats)
     if (chats) {
         chats.forEach(item => {
-            if (item.ownerId !== item.userId) {
+            if (item.ownerId != currentSess) {
                 const otherChatsLi = document.createElement(`li`);
                 otherChatsLi.textContent = `${item.conversation_name}`
                 otherChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
@@ -270,6 +273,7 @@ deleteConvBtn.addEventListener(`click`, () => deleteConversation(currentRoomId))
 // delete conversation function
 // issues a delete request to  the current room open
 function deleteConversation(convId) {
+    console.log(convId)
     const otherUrl = `http://localhost:3000/api/conversations/${convId}`
     fetch(otherUrl, {
         method: `DELETE`,
