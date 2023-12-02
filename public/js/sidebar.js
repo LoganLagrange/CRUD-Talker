@@ -8,6 +8,8 @@ const logoutBtn = document.getElementById(`logout-btn`);
 const conversationNameHeading = document.getElementById(`conversation-name-heading`);
 const deleteConvBtn = document.getElementById(`delete-conv-btn`);
 
+deleteConvBtn.style.display = `none`;
+
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
@@ -31,14 +33,14 @@ function renderYourChats(chats) {
             const yourChatsLi = document.createElement(`li`);
             yourChatsLi.textContent = `${item.conversation_name}`;
             yourChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
-            yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
+            yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id, item.owner_id));
             yourChatsUl.appendChild(yourChatsLi);
         });
     }
 }
 
 // Event handler for clicking on the conversation
-function conversationClick(conversationName, roomId) {
+function conversationClick(conversationName, roomId, ownerId) {
     conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
     fetchMessages(roomId);
@@ -46,6 +48,9 @@ function conversationClick(conversationName, roomId) {
     const socket = socketSetup(roomId);
     // creates event listener on the chat form calls submit form function
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
+    if(ownerId == roomId) {
+        deleteConvBtn.style.display = `inline-block`
+    }
 }
 
 // submit form function
