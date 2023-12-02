@@ -12,8 +12,8 @@ const chatPageLogo = document.getElementById(`chat-page-logo`);
 // set chat container to not display by default
 chatMessages.style.display = `none`;
 chatForm.style.display = `none`;
-chatPageLogo.style.dislpay = `block`;
-// chatContainer.style.display = `none`;
+chatPageLogo.style.display = `block`;
+
 
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
@@ -52,7 +52,7 @@ function conversationClick(conversation_name, roomId) {
     chatPageLogo.style.display = `none`;
     chatMessages.style.display = `block`;
     chatForm.style.display = `block`;
-    // chatContainer.style.display = `block`;
+    
     console.log(`roomId:` + roomId);
     // calls fetch messages function
     fetchMessages(roomId);
