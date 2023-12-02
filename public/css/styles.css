@@ -1,3 +1,7 @@
+:root {
+    --logo-dark-blue: #041F3F
+}
+
 #main-page-logo {
     width:300px;
     filter:drop-shadow(#285274 0.25rem 0.25rem 2px)
