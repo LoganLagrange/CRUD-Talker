@@ -36,10 +36,12 @@ function loginFunc(username, password){
                 return Promise.reject({status: res.status, message: `Unexpected error occurred!`})
             }
         }
-        return res.json;
+        return res.json();
     }).then(res => {
+        const userId = res.userId;
         const newUrl = `http://localhost:3000/`
         window.location.href = newUrl;
+        sessionStorage.setItem(`userId:`, userId);
     }) .catch(err => {
         // logs and displays error or bad status code
         console.error(err);
