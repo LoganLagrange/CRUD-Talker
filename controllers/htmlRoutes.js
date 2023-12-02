@@ -8,7 +8,8 @@ router.get("/",  (req,res)=>{
         const imageUrl = `../img/logo.png`
         res.render("landing_page", {imageUrl});
     } else {
-        res.render("chat_room_page");
+        imageUrl = `../img/logo.png`
+        res.render("chat_room_page", {imageUrl});
     }
 })
 

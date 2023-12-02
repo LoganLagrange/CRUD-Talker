@@ -5,6 +5,15 @@ const chatUl = document.getElementById(`chat-ul`);
 const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
+// const chatContainer = document.getElementById(`chat-container`);
+const chatMessages = document.getElementById(`chat-messages`);
+const chatPageLogo = document.getElementById(`chat-page-logo`);
+
+// set chat container to not display by default
+chatMessages.style.display = `none`;
+chatForm.style.display = `none`;
+chatPageLogo.style.display = `flex`;
+
 
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
@@ -17,18 +26,19 @@ fetch(url, {
 }).then(res => res.json())
     .then(res => {
         console.log(res)
+        // calls render your chats function
         renderYourChats(res);
     }).catch(err => {
         console.error(err);
     });
 
+// render other chats function
+// renders chats user owns 
 function renderYourChats(chats) {
     if (chats) {
         chats.forEach(item => {
-            console.log(item);
             const yourChatsLi = document.createElement(`li`);
             yourChatsLi.textContent = `${item.conversation_name}`
-            console.log(item);
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
             yourChatsUl.appendChild(yourChatsLi);
         });
@@ -36,6 +46,14 @@ function renderYourChats(chats) {
 }
 
 // Event handler for clicking on the conversation
+// DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
+function conversationClick(conversation_name, roomId) {
+    // set chat container to show up when conversation is clicked
+    chatPageLogo.style.display = `none`;
+    chatMessages.style.display = `block`;
+    chatForm.style.display = `block`;
+    
+    console.log(`roomId:` + roomId);
 function conversationClick(a,roomId) {
     // calls fetch messages function
     fetchMessages(roomId);
@@ -124,6 +142,8 @@ function socketSetup(roomId) {
     return socket;
 }
 
+// renderlive function
+// renders messages recieved by socket live onto the page
 function renderLive(msg, socketSenderId) {
     const currentSessionId = sessionStorage.getItem(`userId`);
     const chatLi = document.createElement(`li`);
@@ -138,6 +158,8 @@ function renderLive(msg, socketSenderId) {
     
 }
 
+// send message function
+// sends a message to the server
 function sendMessage(socket, message, conversationId, socketSessionId) {
     if(socket.connected) {
     socket.emit(`chat message`, message, conversationId, socketSessionId);
@@ -147,6 +169,8 @@ function sendMessage(socket, message, conversationId, socketSessionId) {
 
 }
 
+// save messsage function
+// issues a post request to the server to save messages in the database
 function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
     const socketSessionId = sessionStorage.getItem(`userId`);
@@ -164,14 +188,18 @@ function saveMessage(msg, conversationId, socket) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
+        // calls send message function
         sendMessage(socket, msg, conversationId, socketSessionId);
         }).catch(err => {
             console.error(err);
         });
 }
 
+// event listener for the logout button
 logoutBtn.addEventListener(`click`, () => logout());
 
+// logout function
+// issues delete request to the server to log user out (destroy session data)
 function logout(){
     const logoutUrl = `http://localhost:3000/api/users/logout`
     fetch(logoutUrl, {
@@ -188,16 +216,7 @@ function logout(){
         });
 }
 
-
-
-
-
-
-
-
-
-
-
+// fetches the conversations the user is in but does not own
 const otherUrl = `http://localhost:3000/api/conversations/isin`
 fetch(otherUrl, {
     method: `GET`,
@@ -208,11 +227,14 @@ fetch(otherUrl, {
 }).then(res => res.json())
     .then(res => {
         console.log(res)
+        // calls render other chats function
         renderOtherChats(res);
     }).catch(err => {
         console.error(err);
     });
-
+  
+// render other chats function
+// renders chats user is in but does not own
 function renderOtherChats(chats) {
     if (chats) {
         chats.forEach(item => {
