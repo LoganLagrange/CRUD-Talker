@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { Message, Conversation, User } = require('../models'); // Imports the Message and Conversation model
 const userAuth = require(`../middleware/userAuth`); //Imports user authentication middlewear
+const sequelize = require('../config/connection');
+const { Sequelize } = require('sequelize');
 
 // GET all conversations
 router.get(`/`,(req,res) => {
@@ -28,9 +30,14 @@ router.get(`/owner/`, (req,res) => {
 // GET all conversations user is in
 router.get(`/isin/`, (req,res) => {
     Conversation.findAll({
-        where: {
-            userId: req.session.user.id
-        }
+        include: [{
+            model: User,
+            as: `Owner`,
+            attributes: [],
+            where: {
+                id: {[Sequelize.Op.ne]: req.session.user.id}
+            }
+        }]
     }).then(dbConversation => {
         res.json(dbConversation);
     }).catch(err => {
