@@ -54,6 +54,7 @@ function conversationClick(conversation_name, roomId) {
     chatForm.style.display = `block`;
     
     console.log(`roomId:` + roomId);
+function conversationClick(a,roomId) {
     // calls fetch messages function
     fetchMessages(roomId);
     // calls socket setup function
@@ -81,9 +82,12 @@ function fetchMessages(roomId) {
 
     }).then(res => res.json())
         .then(res => {
+            const userId = res.userId
+            const dbConversation = res.dbConversation
             console.log(res)
+            console.log(userId)
             // calls render messages function
-            renderMessages(res);
+            renderMessages(dbConversation,userId);
         }).catch(err => {
             console.error(err);
         });
@@ -92,10 +96,16 @@ function fetchMessages(roomId) {
 
 // render messages function
 // renders historical messages in the chat window
-function renderMessages(chats) {
+function renderMessages(chats,userId) {
+    console.log(userId)
     if (chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
+            if (item.id === userId) {
+                yourMessagesLi.setAttribute("class","outgoingMsg");
+            } else {
+                yourMessagesLi.setAttribute("class","incomingMsg");
+            }
             yourMessagesLi.textContent = `${item.content}`
             chatUl.appendChild(yourMessagesLi);
         });
@@ -137,6 +147,11 @@ function renderLive(msg) {
     chatLi.textContent = `${msg}`
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
+    // if (msg.id === req.session.user.id) {
+    //     yourMessagesLi.setAttribute("class","outgoingMsg");
+    // } else {
+    //     yourMessagesLi.setAttribute("class","incomingMsg");
+    // }
 }
 
 // send message function

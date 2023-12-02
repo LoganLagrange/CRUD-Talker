@@ -19,7 +19,9 @@ router.get(`/inconvo/:id`, (req,res) => {
             conversationId: req.params.id
         }
     }).then(dbConversation => {
-        res.json(dbConversation);
+        const userId = req.session.user.id
+        console.log(userId)
+        res.json({dbConversation,userId});
     }).catch(err => {
         res.status(500).json({msg:`Server Error!`, err});
     })
