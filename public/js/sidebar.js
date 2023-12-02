@@ -48,7 +48,8 @@ function conversationClick(conversationName, roomId, ownerId) {
     const socket = socketSetup(roomId);
     // creates event listener on the chat form calls submit form function
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
-    if(ownerId == roomId) {
+    const currentSession = sessionStorage.getItem(`UserId`)
+    if(ownerId == currentSession) {
         deleteConvBtn.style.display = `inline-block`
     }
 }
