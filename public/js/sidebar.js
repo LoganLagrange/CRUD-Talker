@@ -54,15 +54,13 @@ function renderYourChats(chats) {
 
 // Event handler for clicking on the conversation
 // DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
-function conversationClick(conversation_name, roomId) {
+function conversationClick(conversationName, roomId, ownerId) {
     // set chat container to show up when conversation is clicked
     chatPageLogo.style.display = `none`;
     chatMessages.style.display = `block`;
     chatForm.style.display = `block`;
     
     console.log(`roomId:` + roomId);
-}
-function conversationClick(conversationName, roomId, ownerId) {
     conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
     fetchMessages(roomId);
