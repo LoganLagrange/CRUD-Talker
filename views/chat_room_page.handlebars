@@ -1,19 +1,23 @@
 <body>
-    <aside>
-        <div id="your-chats-div">
-            <h3>Your Chats</h3>
-            <ul id="your-chats-ul">
+    <aside class="column box is-1 is-justify-content-space-between">
+        <div>
+            <div id="your-chats-div">
+                <h3>Your Chats</h3>
+                <ul id="your-chats-ul">
 
-            </ul>
+                </ul>
+            </div>
+            <div id="other-chats-div">
+                <h3>Other Chats</h3>
+                <ul id="other-chats-ul">
+
+                </ul>
+
+            </div>
         </div>
-        <div id="other-chats-div">
-            <h3>Other Chats</h3>
-            <ul id="other-chats-ul">
-
-            </ul>
-
+        <div>
+            <button class="logout-btn button is-link is-outlined p-2" id="logout-btn">Logout</button>
         </div>
-        <button class="logout-btn" id="logout-btn">Logout</button>
     </aside>
 
     <div class="container box is-three-quarters m-auto has-background-white p-4">
@@ -23,7 +27,7 @@
         </div>
         <form id="chat-form">
             <input id="chat-input" type="text" placeholder="Type a message..." name="message" required>
-            <button type="submit">SEND</button>
+            <button class="button is-link is-outlined p-1" type="submit">SEND</button>
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
