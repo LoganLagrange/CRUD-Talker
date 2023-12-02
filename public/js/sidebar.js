@@ -87,7 +87,7 @@ function fetchMessages(roomId) {
             console.log(res)
             console.log(userId)
             // calls render messages function
-            renderMessages(dbConversation,userId);
+            renderMessages(dbConversation);
         }).catch(err => {
             console.error(err);
         });
@@ -97,11 +97,13 @@ function fetchMessages(roomId) {
 // render messages function
 // renders historical messages in the chat window
 function renderMessages(chats,userId) {
-    console.log(userId)
+    const sessionId = sessionStorage.getItem(`userId`);
+    console.log(`session Id: ${sessionId}`);
     if (chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
-            if (item.id === userId) {
+            console.log(`message userId: ${item.userId}`)
+            if (sessionId == item.userId) {
                 yourMessagesLi.setAttribute("class","outgoingMsg");
             } else {
                 yourMessagesLi.setAttribute("class","incomingMsg");
@@ -128,10 +130,10 @@ function socketSetup(roomId) {
     });
 
     // Event listener for incoming messages
-    socket.on(`chat message`, (msg) => {
-        console.log(`Message from server:`, msg);
+    socket.on(`chat message`, (msg, socketSenderId) => {
+        console.log(`Message from server:`, msg, socketSenderId);
         // Display the message on the page
-        renderLive(msg);
+        renderLive(msg, socketSenderId);
     });
 
     // Emit the 'join room' event
@@ -142,23 +144,25 @@ function socketSetup(roomId) {
 
 // renderlive function
 // renders messages recieved by socket live onto the page
-function renderLive(msg) {
+function renderLive(msg, socketSenderId) {
+    const currentSessionId = sessionStorage.getItem(`userId`);
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
+    if (socketSenderId === currentSessionId) {
+        chatLi.setAttribute("class","outgoingMsg");
+    } else {
+        chatLi.setAttribute("class","incomingMsg");
+    }
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
-    // if (msg.id === req.session.user.id) {
-    //     yourMessagesLi.setAttribute("class","outgoingMsg");
-    // } else {
-    //     yourMessagesLi.setAttribute("class","incomingMsg");
-    // }
+    
 }
 
 // send message function
 // sends a message to the server
-function sendMessage(socket, message, conversationId) {
+function sendMessage(socket, message, conversationId, socketSessionId) {
     if(socket.connected) {
-    socket.emit(`chat message`, message, conversationId);
+    socket.emit(`chat message`, message, conversationId, socketSessionId);
     } else {
         console.log(`socket not connected`);
     }
@@ -169,6 +173,7 @@ function sendMessage(socket, message, conversationId) {
 // issues a post request to the server to save messages in the database
 function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
+    const socketSessionId = sessionStorage.getItem(`userId`);
     const message = {
         content:msg,
 	    conversation_id:conversationId
@@ -184,7 +189,7 @@ function saveMessage(msg, conversationId, socket) {
     }).then(res => res.json())
         .then(res => {
         // calls send message function
-        sendMessage(socket, msg, conversationId);
+        sendMessage(socket, msg, conversationId, socketSessionId);
         }).catch(err => {
             console.error(err);
         });
