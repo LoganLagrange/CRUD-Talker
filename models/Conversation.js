@@ -18,7 +18,7 @@ Conversation.init(
     conversation_name: {
       type: DataTypes.STRING,
       allowNull: false,
-
+    },
     user_id: {
       type: DataTypes.INTEGER,
       references: {
@@ -33,8 +33,6 @@ Conversation.init(
         key: 'id',
       },
     },
-
-    }
   },
   {
     sequelize,
