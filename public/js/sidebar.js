@@ -37,7 +37,7 @@ function renderYourChats(chats) {
 function conversationClick(roomName, roomId) {
     console.log(roomId)
     fetchMessages(roomId);
-    const socket = socketSetup(roomName);
+    const socket = socketSetup(roomId);
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
 }
 
@@ -78,7 +78,7 @@ function renderMessages(chats) {
     }
 }
 
-function socketSetup(roomName) {
+function socketSetup(roomId) {
     const socket=io(`http://localhost:3000`)
 
     socket.on(`connect`, () => {
@@ -95,7 +95,7 @@ function socketSetup(roomName) {
 
     // saveMessage(message);
 
-    socket.emit(`join room`, `${roomName}`);
+    socket.emit(`join room`, `${roomId}`);
 
 }
 

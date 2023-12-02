@@ -88,17 +88,17 @@ module.exports = function (io) {
     io.on('connection', (socket) => {
         console.log('A user connected');
 
-        socket.on(`join room`, (roomName) => {
-            socket.join(roomName);
-            console.log(`User joined room: ${roomName}`);
+        socket.on(`join room`, (roomId) => {
+            socket.join(roomId);
+            console.log(`User joined room: ${roomId}`);
         })
 
         socket.on(`disconnect`, () => {
             console.log(`user disconnect`);
         })
 
-        socket.on(`chat message`, (msg, roomName) => {
-            io.to(roomName).emit(`chat message`, msg);
+        socket.on(`chat message`, (msg, roomId) => {
+            io.to(roomId).emit(`chat message`, msg);
         })
 
         // Prompting for user name and handling new user joining a room
