@@ -28,10 +28,8 @@ fetch(url, {
 function renderYourChats(chats) {
     if (chats) {
         chats.forEach(item => {
-            console.log(item);
             const yourChatsLi = document.createElement(`li`);
             yourChatsLi.textContent = `${item.conversation_name}`
-            console.log(item);
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
             yourChatsUl.appendChild(yourChatsLi);
         });
@@ -39,7 +37,9 @@ function renderYourChats(chats) {
 }
 
 // Event handler for clicking on the conversation
-function conversationClick(roomId) {
+// DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
+function conversationClick(conversation_name, roomId) {
+    console.log(`roomId:` + roomId);
     // calls fetch messages function
     fetchMessages(roomId);
     // calls socket setup function
