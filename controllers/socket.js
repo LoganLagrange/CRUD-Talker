@@ -12,9 +12,9 @@ module.exports = function (io) {
             console.log(`user disconnect`);
         })
 
-        socket.on(`chat message`, (msg, roomId) => {
+        socket.on(`chat message`, (msg, roomId, socketSessionId) => {
             console.log(`received message in room ${roomId}: ${msg}`)
-            io.to(roomId).emit(`chat message`, msg);
+            io.to(roomId).emit(`chat message`, msg, socketSessionId);
         })
 
         
