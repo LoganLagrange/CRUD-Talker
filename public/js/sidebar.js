@@ -5,6 +5,15 @@ const chatUl = document.getElementById(`chat-ul`);
 const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
+// const chatContainer = document.getElementById(`chat-container`);
+const chatMessages = document.getElementById(`chat-messages`);
+const chatPageLogo = document.getElementById(`chat-page-logo`);
+
+// set chat container to not display by default
+chatMessages.style.display = `none`;
+chatForm.style.display = `none`;
+chatPageLogo.style.display = `flex`;
+
 const conversationNameHeading = document.getElementById(`conversation-name-heading`);
 const deleteConvBtn = document.getElementById(`delete-conv-btn`);
 
@@ -21,16 +30,20 @@ fetch(url, {
 }).then(res => res.json())
     .then(res => {
         console.log(res)
+        // calls render your chats function
         renderYourChats(res);
     }).catch(err => {
         console.error(err);
     });
 
+// render other chats function
+// renders chats user owns 
 function renderYourChats(chats) {
     if (chats) {
         chats.forEach(item => {
-            console.log(item);
             const yourChatsLi = document.createElement(`li`);
+            yourChatsLi.textContent = `${item.conversation_name}`
+            yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
             yourChatsLi.textContent = `${item.conversation_name}`;
             yourChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id, item.owner_id));
@@ -40,6 +53,15 @@ function renderYourChats(chats) {
 }
 
 // Event handler for clicking on the conversation
+// DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
+function conversationClick(conversation_name, roomId) {
+    // set chat container to show up when conversation is clicked
+    chatPageLogo.style.display = `none`;
+    chatMessages.style.display = `block`;
+    chatForm.style.display = `block`;
+    
+    console.log(`roomId:` + roomId);
+}
 function conversationClick(conversationName, roomId, ownerId) {
     conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
@@ -90,11 +112,13 @@ function fetchMessages(roomId) {
 // render messages function
 // renders historical messages in the chat window
 function renderMessages(chats, userId) {
-    console.log(userId)
+    const sessionId = sessionStorage.getItem(`userId`);
+    console.log(`session Id: ${sessionId}`);
     if (chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
-            if (item.id === userId) {
+            console.log(`message userId: ${item.userId}`)
+            if (sessionId == item.userId) {
                 yourMessagesLi.setAttribute("class", "outgoingMsg");
             } else {
                 yourMessagesLi.setAttribute("class", "incomingMsg");
@@ -121,10 +145,10 @@ function socketSetup(roomId) {
     });
 
     // Event listener for incoming messages
-    socket.on(`chat message`, (msg) => {
-        console.log(`Message from server:`, msg);
+    socket.on(`chat message`, (msg, socketSenderId) => {
+        console.log(`Message from server:`, msg, socketSenderId);
         // Display the message on the page
-        renderLive(msg);
+        renderLive(msg, socketSenderId);
     });
 
     // Emit the 'join room' event
@@ -133,29 +157,38 @@ function socketSetup(roomId) {
     return socket;
 }
 
-function renderLive(msg) {
+// renderlive function
+// renders messages recieved by socket live onto the page
+function renderLive(msg, socketSenderId) {
+    const currentSessionId = sessionStorage.getItem(`userId`);
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
+    if (socketSenderId === currentSessionId) {
+        chatLi.setAttribute("class","outgoingMsg");
+    } else {
+        chatLi.setAttribute("class","incomingMsg");
+    }
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
-    // if (msg.id === req.session.user.id) {
-    //     yourMessagesLi.setAttribute("class","outgoingMsg");
-    // } else {
-    //     yourMessagesLi.setAttribute("class","incomingMsg");
-    // }
+    
 }
 
-function sendMessage(socket, message, conversationId) {
+// send message function
+// sends a message to the server
+function sendMessage(socket, message, conversationId, socketSessionId) {
     if (socket.connected) {
-        socket.emit(`chat message`, message, conversationId);
+        socket.emit(`chat message`, message, conversationId, socketSessionId);
     } else {
         console.log(`socket not connected`);
     }
 
 }
 
+// save messsage function
+// issues a post request to the server to save messages in the database
 function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
+    const socketSessionId = sessionStorage.getItem(`userId`);
     const message = {
         content: msg,
         conversation_id: conversationId
@@ -170,14 +203,18 @@ function saveMessage(msg, conversationId, socket) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
-            sendMessage(socket, msg, conversationId);
+        // calls send message function
+            sendMessage(socket, msg, conversationId, socketSessionId);
         }).catch(err => {
             console.error(err);
         });
 }
 
+// event listener for the logout button
 logoutBtn.addEventListener(`click`, () => logout());
 
+// logout function
+// issues delete request to the server to log user out (destroy session data)
 function logout() {
     const logoutUrl = `http://localhost:3000/api/users/logout`
     fetch(logoutUrl, {
@@ -194,16 +231,7 @@ function logout() {
         });
 }
 
-
-
-
-
-
-
-
-
-
-
+// fetches the conversations the user is in but does not own
 const otherUrl = `http://localhost:3000/api/conversations/isin`
 fetch(otherUrl, {
     method: `GET`,
@@ -214,11 +242,14 @@ fetch(otherUrl, {
 }).then(res => res.json())
     .then(res => {
         console.log(res)
+        // calls render other chats function
         renderOtherChats(res);
     }).catch(err => {
         console.error(err);
     });
-
+  
+// render other chats function
+// renders chats user is in but does not own
 function renderOtherChats(chats) {
     if (chats) {
         chats.forEach(item => {
