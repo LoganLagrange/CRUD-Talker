@@ -5,6 +5,7 @@ const otherChatsUl = document.getElementById(`other-chats-ul`);
 const chatUl = document.getElementById(`chat-ul`);
 const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
+const logoutBtn = document.getElementById(`logout-btn`);
 
 const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
@@ -131,7 +132,23 @@ function saveMessage(msg, conversationId) {
         });
 }
 
+logoutBtn.addEventListener(`click`, () => logout());
 
+function logout(){
+    const logoutUrl = `http://localhost:3000/api/users/logout`
+    fetch(logoutUrl, {
+        method: `DELETE`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+    }).then(res => res.json())
+        .then(res => {
+            window.location.reload();
+        }).catch(err => {
+            console.error(err);
+        });
+}
 
 
 
