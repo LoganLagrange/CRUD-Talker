@@ -9,9 +9,11 @@ const signupWarning = document.getElementById("signup-warning");
 
 signupForm.addEventListener(`submit`, (e) => {
     e.preventDefault();
+    signupWarning.textContent = ``;
     if (signupPassword1.value !== signupPassword2.value) {
         // INSERT PAGE INTERACTION FOR PASSWORD MISMATCH
-        console.log(`learn to spell, idiot`);
+        signupWarning.textContent = `Passwords do not match, please try again.`
+        return;
     }
 
     const newUser = {
@@ -21,6 +23,8 @@ signupForm.addEventListener(`submit`, (e) => {
         password1: signupPassword1.value,
         password2: signupPassword2.value
     }
+
+    let isUsernameTaken
     // signupAuth(newUser);
     const url = `http://localhost:3000/api/users`;
     fetch(url, {
