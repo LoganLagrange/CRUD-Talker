@@ -19,3 +19,7 @@
 #chat-input {
     width:100%;
 }
+
+html {
+    background-color: var(--logo-dark-blue);
+}
