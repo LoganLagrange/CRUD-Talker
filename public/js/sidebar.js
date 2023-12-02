@@ -112,10 +112,10 @@ function socketSetup(roomId) {
     });
 
     // Event listener for incoming messages
-    socket.on(`chat message`, (msg) => {
-        console.log(`Message from server:`, msg);
+    socket.on(`chat message`, (msg, socketSenderId) => {
+        console.log(`Message from server:`, msg, socketSenderId);
         // Display the message on the page
-        renderLive(msg);
+        renderLive(msg, socketSenderId);
     });
 
     // Emit the 'join room' event
@@ -124,21 +124,23 @@ function socketSetup(roomId) {
     return socket;
 }
 
-function renderLive(msg) {
+function renderLive(msg, socketSenderId) {
+    const currentSessionId = sessionStorage.getItem(`userId`);
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
+    if (socketSenderId === currentSessionId) {
+        chatLi.setAttribute("class","outgoingMsg");
+    } else {
+        chatLi.setAttribute("class","incomingMsg");
+    }
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
-    // if (msg.id === req.session.user.id) {
-    //     yourMessagesLi.setAttribute("class","outgoingMsg");
-    // } else {
-    //     yourMessagesLi.setAttribute("class","incomingMsg");
-    // }
+    
 }
 
-function sendMessage(socket, message, conversationId) {
+function sendMessage(socket, message, conversationId, socketSessionId) {
     if(socket.connected) {
-    socket.emit(`chat message`, message, conversationId);
+    socket.emit(`chat message`, message, conversationId, socketSessionId);
     } else {
         console.log(`socket not connected`);
     }
@@ -147,6 +149,7 @@ function sendMessage(socket, message, conversationId) {
 
 function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
+    const socketSessionId = sessionStorage.getItem(`userId`);
     const message = {
         content:msg,
 	    conversation_id:conversationId
@@ -161,7 +164,7 @@ function saveMessage(msg, conversationId, socket) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
-        sendMessage(socket, msg, conversationId);
+        sendMessage(socket, msg, conversationId, socketSessionId);
         }).catch(err => {
             console.error(err);
         });
