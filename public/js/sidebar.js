@@ -14,6 +14,10 @@ chatMessages.style.display = `none`;
 chatForm.style.display = `none`;
 chatPageLogo.style.display = `flex`;
 
+const conversationNameHeading = document.getElementById(`conversation-name-heading`);
+const deleteConvBtn = document.getElementById(`delete-conv-btn`);
+
+deleteConvBtn.style.display = `none`;
 
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
@@ -40,6 +44,9 @@ function renderYourChats(chats) {
             const yourChatsLi = document.createElement(`li`);
             yourChatsLi.textContent = `${item.conversation_name}`
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
+            yourChatsLi.textContent = `${item.conversation_name}`;
+            yourChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
+            yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id, item.owner_id));
             yourChatsUl.appendChild(yourChatsLi);
         });
     }
@@ -54,25 +61,33 @@ function conversationClick(conversation_name, roomId) {
     chatForm.style.display = `block`;
     
     console.log(`roomId:` + roomId);
-function conversationClick(a,roomId) {
+}
+function conversationClick(conversationName, roomId, ownerId) {
+    conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
     fetchMessages(roomId);
     // calls socket setup function
     const socket = socketSetup(roomId);
     // creates event listener on the chat form calls submit form function
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
+    const currentSession = sessionStorage.getItem(`UserId`)
+    if(ownerId == currentSession) {
+        deleteConvBtn.style.display = `inline-block`
+    }
 }
 
 // submit form function
 // calls save message function
-function submitForm(e, roomId, socket){
+function submitForm(e, roomId, socket) {
     e.preventDefault();
     saveMessage(chatInput.value, roomId, socket)
 }
 
 // fetch messages function
 // issues get request to server to get all messages in the conversation
+let currentRoomId;
 function fetchMessages(roomId) {
+    currentRoomId = roomId;
     const chatUrl = `http://localhost:3000/api/messages/inconvo/${roomId}`
     fetch(chatUrl, {
         method: `GET`,
@@ -87,7 +102,7 @@ function fetchMessages(roomId) {
             console.log(res)
             console.log(userId)
             // calls render messages function
-            renderMessages(dbConversation);
+            renderMessages(dbConversation, userId);
         }).catch(err => {
             console.error(err);
         });
@@ -96,7 +111,7 @@ function fetchMessages(roomId) {
 
 // render messages function
 // renders historical messages in the chat window
-function renderMessages(chats,userId) {
+function renderMessages(chats, userId) {
     const sessionId = sessionStorage.getItem(`userId`);
     console.log(`session Id: ${sessionId}`);
     if (chats) {
@@ -104,9 +119,9 @@ function renderMessages(chats,userId) {
             const yourMessagesLi = document.createElement(`li`);
             console.log(`message userId: ${item.userId}`)
             if (sessionId == item.userId) {
-                yourMessagesLi.setAttribute("class","outgoingMsg");
+                yourMessagesLi.setAttribute("class", "outgoingMsg");
             } else {
-                yourMessagesLi.setAttribute("class","incomingMsg");
+                yourMessagesLi.setAttribute("class", "incomingMsg");
             }
             yourMessagesLi.textContent = `${item.content}`
             chatUl.appendChild(yourMessagesLi);
@@ -161,8 +176,8 @@ function renderLive(msg, socketSenderId) {
 // send message function
 // sends a message to the server
 function sendMessage(socket, message, conversationId, socketSessionId) {
-    if(socket.connected) {
-    socket.emit(`chat message`, message, conversationId, socketSessionId);
+    if (socket.connected) {
+        socket.emit(`chat message`, message, conversationId, socketSessionId);
     } else {
         console.log(`socket not connected`);
     }
@@ -175,8 +190,8 @@ function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
     const socketSessionId = sessionStorage.getItem(`userId`);
     const message = {
-        content:msg,
-	    conversation_id:conversationId
+        content: msg,
+        conversation_id: conversationId
     }
 
     const url = `http://localhost:3000/api/messages`
@@ -189,7 +204,7 @@ function saveMessage(msg, conversationId, socket) {
     }).then(res => res.json())
         .then(res => {
         // calls send message function
-        sendMessage(socket, msg, conversationId, socketSessionId);
+            sendMessage(socket, msg, conversationId, socketSessionId);
         }).catch(err => {
             console.error(err);
         });
@@ -200,7 +215,7 @@ logoutBtn.addEventListener(`click`, () => logout());
 
 // logout function
 // issues delete request to the server to log user out (destroy session data)
-function logout(){
+function logout() {
     const logoutUrl = `http://localhost:3000/api/users/logout`
     fetch(logoutUrl, {
         method: `DELETE`,
@@ -241,9 +256,31 @@ function renderOtherChats(chats) {
             if (item.ownerId !== item.userId) {
                 const otherChatsLi = document.createElement(`li`);
                 otherChatsLi.textContent = `${item.conversation_name}`
+                otherChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
                 otherChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
                 otherChatsUl.appendChild(otherChatsLi);
             }
         });
     }
+}
+
+// Event listener for the delete conversation button
+deleteConvBtn.addEventListener(`click`, () => deleteConversation(currentRoomId));
+
+// delete conversation function
+// issues a delete request to  the current room open
+function deleteConversation(convId) {
+    const otherUrl = `http://localhost:3000/api/conversations/${convId}`
+    fetch(otherUrl, {
+        method: `DELETE`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+    }).then(res => res.json())
+        .then(res => {
+            location.reload();
+        }).catch(err => {
+            console.error(err);
+        });
 }

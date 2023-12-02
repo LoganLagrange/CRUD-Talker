@@ -1,3 +1,7 @@
+:root {
+    --logo-dark-blue: #041F3F
+}
+
 #main-page-logo {
     width:300px;
     filter:drop-shadow(#285274 0.25rem 0.25rem 2px)
@@ -36,4 +40,34 @@
     border-radius: 20px 20px 0px 20px;
     align-self: flex-end;
     background-color: lightblue;
+}
+
+html {
+    background-color: var(--logo-dark-blue);
+}
+
+#chat-container {
+    height: 50vh;
+    overflow-y: auto;
+}
+
+#conversation-name-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--logo-dark-blue);
+    color: white;
+}
+
+#sidebar {
+}
+
+.conversation-li {
+    background-color: var(--logo-dark-blue);
+    color: white;
+}
+
+.convo-h {
+    color: var(--logo-dark-blue);
+    font-weight: bold;
 }
