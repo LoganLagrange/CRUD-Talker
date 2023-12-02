@@ -181,6 +181,7 @@ function renderOtherChats(chats) {
             if (item.ownerId !== item.userId) {
                 const otherChatsLi = document.createElement(`li`);
                 otherChatsLi.textContent = `${item.conversation_name}`
+                otherChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
                 otherChatsUl.appendChild(otherChatsLi);
             }
         });
