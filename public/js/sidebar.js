@@ -12,7 +12,7 @@ const chatPageLogo = document.getElementById(`chat-page-logo`);
 // set chat container to not display by default
 chatMessages.style.display = `none`;
 chatForm.style.display = `none`;
-chatPageLogo.style.display = `block`;
+chatPageLogo.style.display = `flex`;
 
 
 // gets all conversations the user owns
