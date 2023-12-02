@@ -5,6 +5,7 @@ const signupName = document.getElementById(`signup-name`);
 const signupEmail = document.getElementById(`signup-email`);
 const signupPassword1 = document.getElementById(`signup-pword1`);
 const signupPassword2 = document.getElementById(`signup-pword2`);
+const signupWarning = document.getElementById("signup-warning");
 
 signupForm.addEventListener(`submit`, (e) => {
     e.preventDefault();
@@ -20,8 +21,51 @@ signupForm.addEventListener(`submit`, (e) => {
         password1: signupPassword1.value,
         password2: signupPassword2.value
     }
-    signup(newUser);
+    // signupAuth(newUser);
+    const url = `http://localhost:3000/api/users`;
+    fetch(url, {
+        method: `GET`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        
+    }).then(res => res.json())
+    .then(res => {
+        res.forEach(item => {
+            if(item.username === newUser.username) {
+                signupWarning.textContent = `That username is taken! Please select another.`
+                isUsernameTaken = true;
+            } 
+        });
+        if(!isUsernameTaken) {
+            signup(newUser);
+        }
+    }) .catch(err => {
+        console.error(err);
+    });
+    // signup(newUser);
 });
+
+function signupAuth(newUser) {
+    const url = `http://localhost:3000/api/users`;
+    fetch(url, {
+        method: `GET`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        
+    }).then(res => res.json())
+    .then(res => {
+        res.forEach(item => {
+            if(item.username === newUser.username) {
+                signupWarning.textContent = `That username is taken! Please select another.`
+                return;
+            } 
+        });
+    }) .catch(err => {
+        console.error(err);
+    });
+}
 
 function signup(newUserData){    
     const url = `http://localhost:3000/api/users`;
