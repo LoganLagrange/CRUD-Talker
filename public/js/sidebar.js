@@ -17,11 +17,14 @@ fetch(url, {
 }).then(res => res.json())
     .then(res => {
         console.log(res)
+        // calls render your chats function
         renderYourChats(res);
     }).catch(err => {
         console.error(err);
     });
 
+// render other chats function
+// renders chats user owns 
 function renderYourChats(chats) {
     if (chats) {
         chats.forEach(item => {
@@ -113,6 +116,8 @@ function socketSetup(roomId) {
     return socket;
 }
 
+// renderlive function
+// renders messages recieved by socket live onto the page
 function renderLive(msg) {
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
@@ -120,6 +125,8 @@ function renderLive(msg) {
     chatInput.value = ``;
 }
 
+// send message function
+// sends a message to the server
 function sendMessage(socket, message, conversationId) {
     if(socket.connected) {
     socket.emit(`chat message`, message, conversationId);
@@ -129,6 +136,8 @@ function sendMessage(socket, message, conversationId) {
 
 }
 
+// save messsage function
+// issues a post request to the server to save messages in the database
 function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
     const message = {
@@ -145,14 +154,18 @@ function saveMessage(msg, conversationId, socket) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
+        // calls send message function
         sendMessage(socket, msg, conversationId);
         }).catch(err => {
             console.error(err);
         });
 }
 
+// event listener for the logout button
 logoutBtn.addEventListener(`click`, () => logout());
 
+// logout function
+// issues delete request to the server to log user out (destroy session data)
 function logout(){
     const logoutUrl = `http://localhost:3000/api/users/logout`
     fetch(logoutUrl, {
@@ -169,16 +182,7 @@ function logout(){
         });
 }
 
-
-
-
-
-
-
-
-
-
-
+// fetches the conversations the user is in but does not own
 const otherUrl = `http://localhost:3000/api/conversations/isin`
 fetch(otherUrl, {
     method: `GET`,
@@ -189,11 +193,14 @@ fetch(otherUrl, {
 }).then(res => res.json())
     .then(res => {
         console.log(res)
+        // calls render other chats function
         renderOtherChats(res);
     }).catch(err => {
         console.error(err);
     });
-
+  
+// render other chats function
+// renders chats user is in but does not own
 function renderOtherChats(chats) {
     if (chats) {
         chats.forEach(item => {
