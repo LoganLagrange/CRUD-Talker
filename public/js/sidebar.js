@@ -144,7 +144,7 @@ function logout(){
 
     }).then(res => res.json())
         .then(res => {
-            console.log(res)
+            window.location.reload();
         }).catch(err => {
             console.error(err);
         });
