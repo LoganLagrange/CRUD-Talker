@@ -1,5 +1,4 @@
-const socket=io(`http://localhost:3000`)
-
+// CHAT ROOM PAGE logic
 const yourChatsUl = document.getElementById(`your-chats-ul`);
 const otherChatsUl = document.getElementById(`other-chats-ul`);
 const chatUl = document.getElementById(`chat-ul`);
@@ -7,6 +6,7 @@ const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
 
+// gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
     method: `GET`,
@@ -35,20 +35,25 @@ function renderYourChats(chats) {
     }
 }
 
-function conversationClick(roomName, roomId) {
-    console.log(roomId)
+// Event handler for clicking on the conversation
+function conversationClick(roomId) {
+    // calls fetch messages function
     fetchMessages(roomId);
-    socketSetup(roomName);
-    chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId));
+    // calls socket setup function
+    const socket = socketSetup(roomId);
+    // creates event listener on the chat form calls submit form function
+    chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
 }
 
-function submitForm(e, roomId){
-    console.log(roomId)
+// submit form function
+// calls save message function
+function submitForm(e, roomId, socket){
     e.preventDefault();
-    saveMessage(chatInput.value, roomId)
-    renderLive(chatInput.value)
+    saveMessage(chatInput.value, roomId, socket)
 }
 
+// fetch messages function
+// issues get request to server to get all messages in the conversation
 function fetchMessages(roomId) {
     const chatUrl = `http://localhost:3000/api/messages/inconvo/${roomId}`
     fetch(chatUrl, {
@@ -60,6 +65,7 @@ function fetchMessages(roomId) {
     }).then(res => res.json())
         .then(res => {
             console.log(res)
+            // calls render messages function
             renderMessages(res);
         }).catch(err => {
             console.error(err);
@@ -67,8 +73,8 @@ function fetchMessages(roomId) {
 
 }
 
-
-
+// render messages function
+// renders historical messages in the chat window
 function renderMessages(chats) {
     if (chats) {
         chats.forEach(item => {
@@ -79,39 +85,52 @@ function renderMessages(chats) {
     }
 }
 
-function socketSetup(roomName) {
+// socket setup function
+// sets up socket initialization
+function socketSetup(roomId) {
+    const socket = io(`http://localhost:3000`);
+
+    // Event listener for successful connection
     socket.on(`connect`, () => {
         console.log(`Connected to server`);
     });
 
+    // Event listener for room joining
+    socket.on(`join room`, (room) => {
+        console.log(`joined room: `, room);
+    });
+
+    // Event listener for incoming messages
     socket.on(`chat message`, (msg) => {
         console.log(`Message from server:`, msg);
         // Display the message on the page
         renderLive(msg);
     });
 
-    // Send message to server
+    // Emit the 'join room' event
+    socket.emit(`join room`, roomId);
 
-    // saveMessage(message);
-
-    socket.emit(`joinRoom`, roomName);
-
+    return socket;
 }
 
 function renderLive(msg) {
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
     chatUl.appendChild(chatLi);
+    chatInput.value = ``;
 }
 
-function sendMessage() {
-    const message = chatInput.value
-    socket.emit(`chat message`, message);
+function sendMessage(socket, message, conversationId) {
+    if(socket.connected) {
+    socket.emit(`chat message`, message, conversationId);
+    } else {
+        console.log(`socket not connected`);
+    }
 
 }
 
-function saveMessage(msg, conversationId) {
-    console.log(msg, conversationId);
+function saveMessage(msg, conversationId, socket) {
+    console.log(`roomId save message: ${conversationId}`);
     const message = {
         content:msg,
 	    conversation_id:conversationId
@@ -126,7 +145,7 @@ function saveMessage(msg, conversationId) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
-            sendMessage()
+        sendMessage(socket, msg, conversationId);
         }).catch(err => {
             console.error(err);
         });
@@ -181,6 +200,7 @@ function renderOtherChats(chats) {
             if (item.ownerId !== item.userId) {
                 const otherChatsLi = document.createElement(`li`);
                 otherChatsLi.textContent = `${item.conversation_name}`
+                otherChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
                 otherChatsUl.appendChild(otherChatsLi);
             }
         });
