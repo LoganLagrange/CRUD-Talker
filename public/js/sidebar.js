@@ -45,7 +45,6 @@ function submitForm(e, roomId, socket){
     console.log(`roomId form submit: ${roomId}`)
     e.preventDefault();
     saveMessage(chatInput.value, roomId, socket)
-    renderLive(chatInput.value)
 }
 
 function fetchMessages(roomId) {
@@ -109,6 +108,7 @@ function renderLive(msg) {
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
     chatUl.appendChild(chatLi);
+    chatInput.value = ``;
 }
 
 function sendMessage(socket, message, conversationId) {
