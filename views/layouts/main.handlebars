@@ -9,15 +9,6 @@
     
 </head>
 <body>
-    <nav class="nav">
-        {{#if session.user}}
-        <a class="nav-element" href="./login">Login</a>
-        <a class="nav-element" href="./registration">Sign Up</a>
-        {{else}}
-        <button class="logout-btn" id="logout-btn">Logout</button>
-        {{/if}}
-        
-    </nav>
     <main>
     {{{body}}}
     </main>
