@@ -15,3 +15,25 @@
 #chat-input {
     width:100%;
 }
+
+#chat-ul {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 111px;
+}
+
+#chat-form {
+    display:flex;
+}
+
+.incomingMsg {
+    border-radius: 20px 20px 20px 0px;
+    align-self: flex-start;
+    background-color: lightsalmon;
+}
+
+.outgoingMsg {
+    border-radius: 20px 20px 0px 20px;
+    align-self: flex-end;
+    background-color: lightblue;
+}
