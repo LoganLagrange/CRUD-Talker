@@ -5,6 +5,7 @@ const chatUl = document.getElementById(`chat-ul`);
 const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
+const conversationNameHeading = document.getElementById(`conversation-name-heading`);
 
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
@@ -27,8 +28,8 @@ function renderYourChats(chats) {
         chats.forEach(item => {
             console.log(item);
             const yourChatsLi = document.createElement(`li`);
-            yourChatsLi.textContent = `${item.conversation_name}`
-            console.log(item);
+            yourChatsLi.textContent = `${item.conversation_name}`;
+            yourChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
             yourChatsUl.appendChild(yourChatsLi);
         });
@@ -36,7 +37,8 @@ function renderYourChats(chats) {
 }
 
 // Event handler for clicking on the conversation
-function conversationClick(a,roomId) {
+function conversationClick(conversationName, roomId) {
+    conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
     fetchMessages(roomId);
     // calls socket setup function
@@ -214,6 +216,7 @@ function renderOtherChats(chats) {
             if (item.ownerId !== item.userId) {
                 const otherChatsLi = document.createElement(`li`);
                 otherChatsLi.textContent = `${item.conversation_name}`
+                otherChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
                 otherChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
                 otherChatsUl.appendChild(otherChatsLi);
             }

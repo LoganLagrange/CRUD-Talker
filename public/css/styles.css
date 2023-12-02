@@ -28,3 +28,21 @@ html {
     height: 50vh;
     overflow-y: auto;
 }
+
+#conversation-name-heading {
+    background-color: var(--logo-dark-blue);
+    color: white;
+}
+
+#sidebar {
+}
+
+.conversation-li {
+    background-color: var(--logo-dark-blue);
+    color: white;
+}
+
+.convo-h {
+    color: var(--logo-dark-blue);
+    font-weight: bold;
+}

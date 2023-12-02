@@ -1,14 +1,14 @@
 <body>
-    <aside class="column box is-1 is-justify-content-space-between">
+    <aside class="column box is-1 is-justify-content-space-between" id="sidebar">
         <div>
             <div id="your-chats-div">
-                <h3>Your Chats</h3>
+                <h3 class="convo-h">Your Chats</h3>
                 <ul id="your-chats-ul">
 
                 </ul>
             </div>
             <div id="other-chats-div">
-                <h3>Other Chats</h3>
+                <h3 class="convo-h">Other Chats</h3>
                 <ul id="other-chats-ul">
 
                 </ul>
@@ -21,6 +21,7 @@
     </aside>
 
     <div class="container box is-three-quarters m-auto has-background-white p-4" >
+        <h3 class="p-3 box" id="conversation-name-heading"></h3>
         <div class="chat-messages" id="chat-container">
             <!-- Messages will appear here -->
             {{> chat}}
