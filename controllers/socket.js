@@ -91,6 +91,7 @@ module.exports = function (io) {
         socket.on(`join room`, (roomId) => {
             socket.join(roomId);
             console.log(`User joined room: ${roomId}`);
+            socket.emit(`join room`, roomId);
         })
 
         socket.on(`disconnect`, () => {
@@ -98,6 +99,7 @@ module.exports = function (io) {
         })
 
         socket.on(`chat message`, (msg, roomId) => {
+            console.log(`received message in room ${roomId}: ${msg}`)
             io.to(roomId).emit(`chat message`, msg);
         })
 

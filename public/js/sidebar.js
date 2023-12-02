@@ -35,14 +35,14 @@ function renderYourChats(chats) {
 }
 
 function conversationClick(roomName, roomId) {
-    console.log(roomId)
+    console.log(`roomId click: ${roomId}`)
     fetchMessages(roomId);
     const socket = socketSetup(roomId);
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
 }
 
 function submitForm(e, roomId, socket){
-    console.log(roomId)
+    console.log(`roomId form submit: ${roomId}`)
     e.preventDefault();
     saveMessage(chatInput.value, roomId, socket)
     renderLive(chatInput.value)
@@ -69,6 +69,7 @@ function fetchMessages(roomId) {
 
 
 function renderMessages(chats) {
+    console.log(`renderLive trigger`);
     if (chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
@@ -79,24 +80,29 @@ function renderMessages(chats) {
 }
 
 function socketSetup(roomId) {
-    const socket=io(`http://localhost:3000`)
+    const socket = io(`http://localhost:3000`);
 
+    // Event listener for successful connection
     socket.on(`connect`, () => {
         console.log(`Connected to server`);
     });
 
+    // Event listener for room joining
+    socket.on(`join room`, (room) => {
+        console.log(`joined room: `, room);
+    });
+
+    // Event listener for incoming messages
     socket.on(`chat message`, (msg) => {
         console.log(`Message from server:`, msg);
         // Display the message on the page
         renderLive(msg);
     });
 
-    // Send message to server
+    // Emit the 'join room' event
+    socket.emit(`join room`, roomId);
 
-    // saveMessage(message);
-
-    socket.emit(`join room`, `${roomId}`);
-
+    return socket;
 }
 
 function renderLive(msg) {
@@ -105,14 +111,17 @@ function renderLive(msg) {
     chatUl.appendChild(chatLi);
 }
 
-function sendMessage(socket) {
-    const message = chatInput.value
-    socket.emit(`chat message`, message);
+function sendMessage(socket, message, conversationId) {
+    if(socket.connected) {
+    socket.emit(`chat message`, message, conversationId);
+    } else {
+        console.log(`socket not connected`);
+    }
 
 }
 
 function saveMessage(msg, conversationId, socket) {
-    console.log(msg, conversationId);
+    console.log(`roomId save message: ${conversationId}`);
     const message = {
         content:msg,
 	    conversation_id:conversationId
@@ -127,7 +136,7 @@ function saveMessage(msg, conversationId, socket) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
-            sendMessage(socket)
+        sendMessage(socket, msg, conversationId);
         }).catch(err => {
             console.error(err);
         });
