@@ -1,4 +1,4 @@
-
+// CHAT ROOM PAGE logic
 const yourChatsUl = document.getElementById(`your-chats-ul`);
 const otherChatsUl = document.getElementById(`other-chats-ul`);
 const chatUl = document.getElementById(`chat-ul`);
@@ -6,6 +6,7 @@ const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
 
+// gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
     method: `GET`,
@@ -34,19 +35,25 @@ function renderYourChats(chats) {
     }
 }
 
-function conversationClick(roomName, roomId) {
-    console.log(`roomId click: ${roomId}`)
+// Event handler for clicking on the conversation
+function conversationClick(roomId) {
+    // calls fetch messages function
     fetchMessages(roomId);
+    // calls socket setup function
     const socket = socketSetup(roomId);
+    // creates event listener on the chat form calls submit form function
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
 }
 
+// submit form function
+// calls save message function
 function submitForm(e, roomId, socket){
-    console.log(`roomId form submit: ${roomId}`)
     e.preventDefault();
     saveMessage(chatInput.value, roomId, socket)
 }
 
+// fetch messages function
+// issues get request to server to get all messages in the conversation
 function fetchMessages(roomId) {
     const chatUrl = `http://localhost:3000/api/messages/inconvo/${roomId}`
     fetch(chatUrl, {
@@ -58,6 +65,7 @@ function fetchMessages(roomId) {
     }).then(res => res.json())
         .then(res => {
             console.log(res)
+            // calls render messages function
             renderMessages(res);
         }).catch(err => {
             console.error(err);
@@ -65,10 +73,9 @@ function fetchMessages(roomId) {
 
 }
 
-
-
+// render messages function
+// renders historical messages in the chat window
 function renderMessages(chats) {
-    console.log(`renderLive trigger`);
     if (chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
@@ -78,6 +85,8 @@ function renderMessages(chats) {
     }
 }
 
+// socket setup function
+// sets up socket initialization
 function socketSetup(roomId) {
     const socket = io(`http://localhost:3000`);
 
