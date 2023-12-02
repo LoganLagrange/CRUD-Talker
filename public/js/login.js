@@ -41,7 +41,7 @@ function loginFunc(username, password){
         const userId = res.userId;
         const newUrl = `http://localhost:3000/`
         window.location.href = newUrl;
-        sessionStorage.setItem(`userId:`, userId);
+        sessionStorage.setItem(`userId`, userId);
     }) .catch(err => {
         // logs and displays error or bad status code
         console.error(err);

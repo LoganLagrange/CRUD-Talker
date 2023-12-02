@@ -69,7 +69,7 @@ function fetchMessages(roomId) {
             console.log(res)
             console.log(userId)
             // calls render messages function
-            renderMessages(dbConversation,userId);
+            renderMessages(dbConversation);
         }).catch(err => {
             console.error(err);
         });
@@ -79,11 +79,13 @@ function fetchMessages(roomId) {
 // render messages function
 // renders historical messages in the chat window
 function renderMessages(chats,userId) {
-    console.log(userId)
+    const sessionId = sessionStorage.getItem(`userId`);
+    console.log(`session Id: ${sessionId}`);
     if (chats) {
         chats.forEach(item => {
             const yourMessagesLi = document.createElement(`li`);
-            if (item.id === userId) {
+            console.log(`message userId: ${item.userId}`)
+            if (sessionId == item.userId) {
                 yourMessagesLi.setAttribute("class","outgoingMsg");
             } else {
                 yourMessagesLi.setAttribute("class","incomingMsg");
