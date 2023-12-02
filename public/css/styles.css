@@ -2,3 +2,16 @@
     width:300px;
     filter:drop-shadow(#285274 0.25rem 0.25rem 2px)
 }
+
+.column {
+    display:flex;
+    flex-direction:column;
+}
+
+.columns {
+    height:100vh
+}
+
+#chat-input {
+    width:100%;
+}
