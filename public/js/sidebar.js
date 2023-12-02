@@ -1,4 +1,3 @@
-const socket=io(`http://localhost:3000`)
 
 const yourChatsUl = document.getElementById(`your-chats-ul`);
 const otherChatsUl = document.getElementById(`other-chats-ul`);
@@ -38,14 +37,14 @@ function renderYourChats(chats) {
 function conversationClick(roomName, roomId) {
     console.log(roomId)
     fetchMessages(roomId);
-    socketSetup(roomName);
-    chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId));
+    const socket = socketSetup(roomName);
+    chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
 }
 
-function submitForm(e, roomId){
+function submitForm(e, roomId, socket){
     console.log(roomId)
     e.preventDefault();
-    saveMessage(chatInput.value, roomId)
+    saveMessage(chatInput.value, roomId, socket)
     renderLive(chatInput.value)
 }
 
@@ -80,6 +79,8 @@ function renderMessages(chats) {
 }
 
 function socketSetup(roomName) {
+    const socket=io(`http://localhost:3000`)
+
     socket.on(`connect`, () => {
         console.log(`Connected to server`);
     });
@@ -94,7 +95,7 @@ function socketSetup(roomName) {
 
     // saveMessage(message);
 
-    socket.emit(`joinRoom`, roomName);
+    socket.emit(`join room`, `${roomName}`);
 
 }
 
@@ -104,13 +105,13 @@ function renderLive(msg) {
     chatUl.appendChild(chatLi);
 }
 
-function sendMessage() {
+function sendMessage(socket) {
     const message = chatInput.value
     socket.emit(`chat message`, message);
 
 }
 
-function saveMessage(msg, conversationId) {
+function saveMessage(msg, conversationId, socket) {
     console.log(msg, conversationId);
     const message = {
         content:msg,
@@ -126,7 +127,7 @@ function saveMessage(msg, conversationId) {
         body: JSON.stringify(message),
     }).then(res => res.json())
         .then(res => {
-            sendMessage()
+            sendMessage(socket)
         }).catch(err => {
             console.error(err);
         });

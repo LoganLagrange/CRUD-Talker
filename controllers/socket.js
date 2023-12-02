@@ -88,39 +88,52 @@ module.exports = function (io) {
     io.on('connection', (socket) => {
         console.log('A user connected');
 
+        socket.on(`join room`, (roomName) => {
+            socket.join(roomName);
+            console.log(`User joined room: ${roomName}`);
+        })
+
+        socket.on(`disconnect`, () => {
+            console.log(`user disconnect`);
+        })
+
+        socket.on(`chat message`, (msg, roomName) => {
+            io.to(roomName).emit(`chat message`, msg);
+        })
+
         // Prompting for user name and handling new user joining a room
-        socket.on('new-user', (room, name) => {
-            socket.join(room);
-            if (!rooms[room]) {
-                rooms[room] = { users: {} };
-            }
-            rooms[room].users[socket.id] = name;
+        // socket.on('new-user', (room, name) => {
+        //     socket.join(room);
+        //     if (!rooms[room]) {
+        //         rooms[room] = { users: {} };
+        //     }
+        //     rooms[room].users[socket.id] = name;
 
-            // Notify others in the room
-            socket.to(room).emit('user-connected', name);
+        //     // Notify others in the room
+        //     socket.to(room).emit('user-connected', name);
 
-            // Append a message in the server console
-            console.log(`${name} joined ${room}`);
-        });
+        //     // Append a message in the server console
+        //     console.log(`${name} joined ${room}`);
+        // });
 
-        // Handling chat messages
-        socket.on('chat message', (room, message) => {
-            // Save the message - modify the saveMessage function as necessary
-              // Assuming socket.id is the user's unique identifier
+        // // Handling chat messages
+        // socket.on('chat message', (room, message) => {
+        //     // Save the message - modify the saveMessage function as necessary
+        //       // Assuming socket.id is the user's unique identifier
 
-            // Broadcast the message to others in the room
-            // io.to(room).emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
-        });
+        //     // Broadcast the message to others in the room
+        //     // io.to(room).emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+        // });
 
-        // Handling user disconnect
-        socket.on('disconnect', () => {
-            getUserRooms(socket).forEach(room => {
-                let name = rooms[room].users[socket.id];
-                socket.to(room).emit('user-disconnected', name);
-                delete rooms[room].users[socket.id];
-                console.log(`${name} disconnected`);
-            });
-        });
+        // // Handling user disconnect
+        // socket.on('disconnect', () => {
+        //     getUserRooms(socket).forEach(room => {
+        //         let name = rooms[room].users[socket.id];
+        //         socket.to(room).emit('user-disconnected', name);
+        //         delete rooms[room].users[socket.id];
+        //         console.log(`${name} disconnected`);
+        //     });
+        // });
 
         // More socket events can be added here
     });
