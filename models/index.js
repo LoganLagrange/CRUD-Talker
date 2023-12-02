@@ -25,10 +25,12 @@ User.hasMany(Conversation, {
 });
 
 Conversation.belongsToMany(User,{
-    through:"UsersConversations"
+    through:"UsersConversations",
+    as: `Participants`
 });
 User.belongsToMany(Conversation,{
-    through:"UsersConversations"
+    through:"UsersConversations",
+    as: `Participants`
 });
 
 module.exports = {
