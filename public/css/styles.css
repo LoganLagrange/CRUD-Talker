@@ -29,7 +29,10 @@ html {
     overflow-y: auto;
 }
 
-#conversation-name-heading {
+#conversation-name-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: var(--logo-dark-blue);
     color: white;
 }

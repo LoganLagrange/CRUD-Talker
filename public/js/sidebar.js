@@ -33,7 +33,7 @@ function renderYourChats(chats) {
             yourChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
             yourChatsUl.appendChild(yourChatsLi);
         });
-    }
+    } 
 }
 
 // Event handler for clicking on the conversation
