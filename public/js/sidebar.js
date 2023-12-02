@@ -5,6 +5,15 @@ const chatUl = document.getElementById(`chat-ul`);
 const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
+// const chatContainer = document.getElementById(`chat-container`);
+const chatMessages = document.getElementById(`chat-messages`);
+const chatPageLogo = document.getElementById(`chat-page-logo`);
+
+// set chat container to not display by default
+chatMessages.style.display = `none`;
+chatForm.style.display = `none`;
+chatPageLogo.style.dislpay = `block`;
+// chatContainer.style.display = `none`;
 
 // gets all conversations the user owns
 const url = `http://localhost:3000/api/conversations/owner`
@@ -39,6 +48,11 @@ function renderYourChats(chats) {
 // Event handler for clicking on the conversation
 // DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
 function conversationClick(conversation_name, roomId) {
+    // set chat container to show up when conversation is clicked
+    chatPageLogo.style.display = `none`;
+    chatMessages.style.display = `block`;
+    chatForm.style.display = `block`;
+    // chatContainer.style.display = `block`;
     console.log(`roomId:` + roomId);
     // calls fetch messages function
     fetchMessages(roomId);
