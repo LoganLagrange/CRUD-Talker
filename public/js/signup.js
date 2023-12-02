@@ -7,11 +7,12 @@ const signupPassword1 = document.getElementById(`signup-pword1`);
 const signupPassword2 = document.getElementById(`signup-pword2`);
 const signupWarning = document.getElementById("signup-warning");
 
+// Event listener for signup form
 signupForm.addEventListener(`submit`, (e) => {
     e.preventDefault();
     signupWarning.textContent = ``;
+    // check is both password fields match
     if (signupPassword1.value !== signupPassword2.value) {
-        // INSERT PAGE INTERACTION FOR PASSWORD MISMATCH
         signupWarning.textContent = `Passwords do not match, please try again.`
         return;
     }
@@ -25,7 +26,13 @@ signupForm.addEventListener(`submit`, (e) => {
     }
 
     let isUsernameTaken
-    // signupAuth(newUser);
+    // call authentication function
+    signupAuth(newUser, isUsernameTaken);
+});
+
+// Username authentication function
+// Checks if username is already taken
+function signupAuth(newUser, isUsernameTaken) {
     const url = `http://localhost:3000/api/users`;
     fetch(url, {
         method: `GET`,
@@ -42,35 +49,16 @@ signupForm.addEventListener(`submit`, (e) => {
             } 
         });
         if(!isUsernameTaken) {
+            // call signup function
             signup(newUser);
         }
     }) .catch(err => {
         console.error(err);
     });
-    // signup(newUser);
-});
-
-function signupAuth(newUser) {
-    const url = `http://localhost:3000/api/users`;
-    fetch(url, {
-        method: `GET`,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        
-    }).then(res => res.json())
-    .then(res => {
-        res.forEach(item => {
-            if(item.username === newUser.username) {
-                signupWarning.textContent = `That username is taken! Please select another.`
-                return;
-            } 
-        });
-    }) .catch(err => {
-        console.error(err);
-    });
 }
 
+// Signup function
+// issues post request  to create new user on server and logs in
 function signup(newUserData){    
     const url = `http://localhost:3000/api/users`;
     const newUser = {
@@ -87,14 +75,15 @@ function signup(newUserData){
         body: JSON.stringify(newUser),
     }).then(res => res.json())
     .then(res => {
+        // call login function
         loginFunc(signupUsername.value, signupPassword1.value);
     }) .catch(err => {
         console.error(err);
     });
-
-//     loginFunc(signupUsername.value, signupPassword1.value);
 }
 
+// Login function
+// Issues post request to server to log user in (create session variables), also refreshes page to chat page
 function loginFunc(username, password){
     const url = `http://localhost:3000/api/users/login`
     
