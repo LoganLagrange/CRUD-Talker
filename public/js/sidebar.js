@@ -314,6 +314,18 @@ function createConversation(conversation_name) {
     const requestBody = {
         conversation_name:conversation_name
     }
+    fetch(otherUrl, {
+        method: `POST`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+    }).then(res => res.json())
+        .then(res => {
+            location.reload();
+        }).catch(err => {
+            console.error(err);
+        });
     }
     
 // event listener for add user form
