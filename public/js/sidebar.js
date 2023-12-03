@@ -11,6 +11,8 @@ const logoutBtn = document.getElementById(`logout-btn`);
 const addUserForm =  document.getElementById(`add-user-form`)
 const chatMessages = document.getElementById(`chat-messages`);
 const chatPageLogo = document.getElementById(`chat-page-logo`);
+const newConvoForm =  document.getElementById(`new-convo-form`);
+const ConvoInput = document.getElementById(`convo-input`);
 const usernameInput = document.getElementById(`username-input`);
 
 // set chat container to not display by default
@@ -301,6 +303,19 @@ function deleteConversation(convId) {
         });
 }
 
+
+newConvoForm.addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    createConversation(ConvoInput.value);
+});
+function createConversation(conversation_name) {
+    console.log(conversation_name);
+    const otherUrl = `http://localhost:3000/api/conversations`
+    const requestBody = {
+        conversation_name:conversation_name
+    }
+    }
+    
 // event listener for add user form
 addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
 
@@ -322,4 +337,6 @@ function addUser(username) {
         }).catch(err => {
             console.error(err);
         });
+
 }
+

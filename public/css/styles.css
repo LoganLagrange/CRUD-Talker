@@ -72,3 +72,7 @@ html {
     color: var(--logo-dark-blue);
     font-weight: bold;
 }
+
+#new-convo-form, #convo-input{
+    max-width: 88%;
+}
