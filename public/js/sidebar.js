@@ -56,9 +56,11 @@ function renderYourChats(chats) {
     }
 }
 
+let currentConversationId;
 // Event handler for clicking on the conversation
 // DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
 function conversationClick(conversationName, roomId, ownerId) {
+    currentConversationId = roomId;
     // set chat container to show up when conversation is clicked
     chatPageLogo.style.display = `none`;
     chatMessages.style.display = `block`;
@@ -292,13 +294,17 @@ function deleteConversation(convId) {
 addUserForm.addEventListener(`submit`, () => );
 
 function addUser(username) {
-    const otherUrl = `http://localhost:3000/api/conversations/new`
+    const otherUrl = `http://localhost:3000/api/conversations/addUser`
+    const requestBody = {
+        username: username,
+        conversationId: currentConversationId
+    }
     fetch(otherUrl, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",
         },
-
+        body: JSON.stringify(requestBody),
     }).then(res => res.json())
         .then(res => {
             location.reload();
