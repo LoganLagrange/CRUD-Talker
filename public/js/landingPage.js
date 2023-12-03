@@ -4,13 +4,13 @@ const landingPageLogin = document.getElementById(`landing-page-login`);
 landingPageSignup.addEventListener(`click`, signupRedirect)
 
 function signupRedirect(){
-    const url = `http://localhost:3000/registration`
+    const url = `/registration`
     window.location.href = url;
 }
 
 landingPageLogin.addEventListener(`click`, loginRedirect)
 
 function loginRedirect(){
-    const url = `http://localhost:3000/login`
+    const url = `/login`
     window.location.href = url;
 }

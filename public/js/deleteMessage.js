@@ -1,8 +1,7 @@
 
 function deleteMessage(messageId) {
 
-        const url = `http://${process.env.NODE_ENV}/api/message${messageId}`;
-    fetch(url, {
+    fetch(`/api/message${messageId}`, {
         method: `DELETE`,
         headers: {
             "Content-Type": "application/json",

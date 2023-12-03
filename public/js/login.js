@@ -13,14 +13,12 @@ loginForm.addEventListener(`submit`, (e) =>  {
 
 // Login function
 // issues post request to server to log user in (create session variables)
-function loginFunc(username, password){
-    const url = `http://localhost:3000/api/users/login`
-    
+function loginFunc(username, password){ 
     const user = {
         username: username,
         password: password
     }
-    fetch(url, {
+    fetch(`/api/users/login`, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",
@@ -39,7 +37,7 @@ function loginFunc(username, password){
         return res.json();
     }).then(res => {
         const userId = res.userId;
-        const newUrl = `http://localhost:3000/`
+        const newUrl = `/`
         window.location.href = newUrl;
         sessionStorage.setItem(`userId`, userId);
     }) .catch(err => {
