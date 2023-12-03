@@ -1,4 +1,7 @@
 // CHAT ROOM PAGE logic
+window.addEventListener(`load`, fetchOwnedChats);
+window.addEventListener(`load`, fetchOtherChats);
+
 const yourChatsUl = document.getElementById(`your-chats-ul`);
 const otherChatsUl = document.getElementById(`other-chats-ul`);
 const chatUl = document.getElementById(`chat-ul`);
@@ -8,6 +11,7 @@ const logoutBtn = document.getElementById(`logout-btn`);
 const addUserForm =  document.getElementById(`add-user-form`)
 const chatMessages = document.getElementById(`chat-messages`);
 const chatPageLogo = document.getElementById(`chat-page-logo`);
+const usernameInput = document.getElementById(`username-input`);
 
 // set chat container to not display by default
 chatMessages.style.display = `none`;
@@ -22,7 +26,8 @@ deleteConvBtn.style.display = `none`;
 currentSess = sessionStorage.getItem(`userId`);
 
 // gets all conversations the user owns
-const url = `http://localhost:3000/api/conversations/owner`
+function fetchOwnedChats() {
+    const url = `http://localhost:3000/api/conversations/owner`
 fetch(url, {
     method: `GET`,
     headers: {
@@ -37,6 +42,7 @@ fetch(url, {
     }).catch(err => {
         console.error(err);
     });
+}
 
 // render other chats function
 // renders chats user owns 
@@ -235,22 +241,24 @@ function logout() {
 }
 
 // fetches the conversations the user is in but does not own
-const otherUrl = `http://localhost:3000/api/conversations/isin`
-fetch(otherUrl, {
-    method: `GET`,
-    headers: {
-        "Content-Type": "application/json",
-    },
+function fetchOtherChats() {
+    const otherUrl = `http://localhost:3000/api/conversations/isin`
+    fetch(otherUrl, {
+        method: `GET`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    
+    }).then(res => res.json())
+        .then(res => {
+            console.log(res)
+            // calls render other chats function
+            renderOtherChats(res);
+        }).catch(err => {
+            console.error(err);
+        });
+}
 
-}).then(res => res.json())
-    .then(res => {
-        console.log(res)
-        // calls render other chats function
-        renderOtherChats(res);
-    }).catch(err => {
-        console.error(err);
-    });
-  
 // render other chats function
 // renders chats user is in but does not own
 function renderOtherChats(chats) {
@@ -291,7 +299,7 @@ function deleteConversation(convId) {
 }
 
 // event listener for add user form
-addUserForm.addEventListener(`submit`, () => );
+addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
 
 function addUser(username) {
     const otherUrl = `http://localhost:3000/api/conversations/addUser`
