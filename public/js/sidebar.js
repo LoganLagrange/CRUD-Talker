@@ -330,7 +330,7 @@ function createConversation(conversation_name) {
     
 // event listener for add user form
 addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
-
+e.preventDefault();
 function addUser(username) {
     const otherUrl = `http://localhost:3000/api/conversations/addUser`
     const requestBody = {
