@@ -129,9 +129,9 @@ function renderMessages(chats, userId) {
             const yourMessagesLi = document.createElement(`li`);
             console.log(`message userId: ${item.userId}`)
             if (sessionId == item.userId) {
-                yourMessagesLi.setAttribute("class", "outgoingMsg");
+                yourMessagesLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
             } else {
-                yourMessagesLi.setAttribute("class", "incomingMsg");
+                yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
             }
             yourMessagesLi.textContent = `${item.content}`
             chatUl.appendChild(yourMessagesLi);
@@ -174,9 +174,9 @@ function renderLive(msg, socketSenderId) {
     const chatLi = document.createElement(`li`);
     chatLi.textContent = `${msg}`
     if (socketSenderId === currentSessionId) {
-        chatLi.setAttribute("class","outgoingMsg");
+        chatLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
     } else {
-        chatLi.setAttribute("class","incomingMsg");
+        chatLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
     }
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
