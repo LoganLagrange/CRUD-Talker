@@ -59,7 +59,8 @@ html {
     color: white;
 }
 
-#sidebar {
+#username-input, #add-user-form {
+    max-width: 70%;
 }
 
 .conversation-li {
