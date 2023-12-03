@@ -86,7 +86,6 @@ html {
 
 #main-container {
     max-height: 95vh;
-    position: absolute;
     min-width: 55vw;
     
 }

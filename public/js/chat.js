@@ -1,7 +1,6 @@
 const chatUl = document.getElementById(`chat-ul`);
 
-const chatUrl = `http://localhost:3000/api/messages/inconvo`
-fetch(chatUrl, {
+fetch(`/api/messages/inconvo`, {
     method: `GET`,
     headers: {
         "Content-Type": "application/json",

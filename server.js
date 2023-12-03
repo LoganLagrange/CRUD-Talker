@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 
 // Session configuration
 const sess = {
-    secret: 'Super secret secret',
+    secret: process.env.SESSION_SECRET,
     cookie: {
         maxAge: 1000 * 60 * 60 * 2
     },
@@ -64,9 +64,8 @@ const io = new Server(server);
 setupSocket(io);
 
 // Listen on HTTP server, NOT THE EXORESS APP
-server.listen(PORT, function() {
-    console.log('App listening on PORT ' + PORT);
-});
-
-// Sync Sequelize models
-sequelize.sync({ force: false });
+sequelize.sync({ force: false }).then(function() {
+    server.listen(PORT, function() {
+        console.log('App listening on PORT ' + PORT);
+    });
+})
