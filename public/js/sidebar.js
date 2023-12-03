@@ -29,8 +29,7 @@ currentSess = sessionStorage.getItem(`userId`);
 
 // gets all conversations the user owns
 function fetchOwnedChats() {
-    const url = `http://localhost:3000/api/conversations/owner`
-fetch(url, {
+fetch(`/api/conversations/owner`, {
     method: `GET`,
     headers: {
         "Content-Type": "application/json",
@@ -98,8 +97,7 @@ function submitForm(e, roomId, socket) {
 let currentRoomId;
 function fetchMessages(roomId) {
     currentRoomId = roomId;
-    const chatUrl = `http://localhost:3000/api/messages/inconvo/${roomId}`
-    fetch(chatUrl, {
+    fetch(`/api/messages/inconvo/${roomId}`, {
         method: `GET`,
         headers: {
             "Content-Type": "application/json",
@@ -144,7 +142,7 @@ let socket;
 // sets up socket initialization
 function socketSetup(roomId) {
     if (!socket) {
-        socket = io(`http://localhost:3000`);
+        socket = io(window.location.origin);
 
         // Event listener for successful connection
         socket.on(`connect`, () => {
@@ -208,8 +206,7 @@ function saveMessage(msg, conversationId, socket) {
         conversation_id: conversationId
     }
 
-    const url = `http://localhost:3000/api/messages`
-    fetch(url, {
+    fetch(`/api/messages`, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",
@@ -230,8 +227,7 @@ logoutBtn.addEventListener(`click`, () => logout());
 // logout function
 // issues delete request to the server to log user out (destroy session data)
 function logout() {
-    const logoutUrl = `http://localhost:3000/api/users/logout`
-    fetch(logoutUrl, {
+    fetch(`/api/users/logout`, {
         method: `DELETE`,
         headers: {
             "Content-Type": "application/json",
@@ -247,8 +243,7 @@ function logout() {
 
 // fetches the conversations the user is in but does not own
 function fetchOtherChats() {
-    const otherUrl = `http://localhost:3000/api/conversations/isin`
-    fetch(otherUrl, {
+    fetch(`/api/conversations/isin`, {
         method: `GET`,
         headers: {
             "Content-Type": "application/json",
@@ -288,8 +283,7 @@ deleteConvBtn.addEventListener(`click`, () => deleteConversation(currentRoomId))
 // issues a delete request to  the current room open
 function deleteConversation(convId) {
     console.log(convId)
-    const otherUrl = `http://localhost:3000/api/conversations/${convId}`
-    fetch(otherUrl, {
+    fetch(`/api/conversations/${convId}`, {
         method: `DELETE`,
         headers: {
             "Content-Type": "application/json",
@@ -310,11 +304,10 @@ newConvoForm.addEventListener(`submit`, (e) => {
 });
 function createConversation(conversation_name) {
     console.log(conversation_name);
-    const otherUrl = `http://localhost:3000/api/conversations`
     const requestBody = {
         conversation_name:conversation_name
     }
-    fetch(otherUrl, {
+    fetch(`/api/conversations`, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",
@@ -332,12 +325,11 @@ function createConversation(conversation_name) {
 addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
 
 function addUser(username) {
-    const otherUrl = `http://localhost:3000/api/conversations/addUser`
     const requestBody = {
         username: username,
         conversationId: currentConversationId
     }
-    fetch(otherUrl, {
+    fetch(`/api/conversations/addUser`, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",

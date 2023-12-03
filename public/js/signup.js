@@ -33,8 +33,7 @@ signupForm.addEventListener(`submit`, (e) => {
 // Username authentication function
 // Checks if username is already taken
 function signupAuth(newUser, isUsernameTaken) {
-    const url = `http://localhost:3000/api/users`;
-    fetch(url, {
+    fetch(`/api/users`, {
         method: `GET`,
         headers: {
             "Content-Type": "application/json",
@@ -60,14 +59,13 @@ function signupAuth(newUser, isUsernameTaken) {
 // Signup function
 // issues post request  to create new user on server and logs in
 function signup(newUserData){    
-    const url = `http://localhost:3000/api/users`;
     const newUser = {
         username:newUserData.username,
         email:newUserData.email,
         password:newUserData.password1,
         name:newUserData.name
     }
-    fetch(url, {
+    fetch(`/api/users`, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",
@@ -85,13 +83,12 @@ function signup(newUserData){
 // Login function
 // Issues post request to server to log user in (create session variables), also refreshes page to chat page
 function loginFunc(username, password){
-    const url = `http://localhost:3000/api/users/login`
     
     const user = {
         username: username,
         password: password
     }
-    fetch(url, {
+    fetch(`/api/users/login`, {
         method: `POST`,
         headers: {
             "Content-Type": "application/json",
