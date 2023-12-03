@@ -121,6 +121,7 @@ function fetchMessages(roomId) {
 // render messages function
 // renders historical messages in the chat window
 function renderMessages(chats, userId) {
+    chatUl.innerHTML = ``;
     const sessionId = sessionStorage.getItem(`userId`);
     console.log(`session Id: ${sessionId}`);
     if (chats) {
