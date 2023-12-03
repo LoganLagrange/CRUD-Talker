@@ -58,7 +58,7 @@ const seedMe = async()=>{
 
     await dbUsers[0].addConversation(1);
 
-    await dbConversation[0].addUsers([1,2]);
+    await dbConversation[0].addParticipants([1,2]);
 
     await dbConversation[0].setOwner(1);
 

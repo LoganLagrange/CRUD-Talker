@@ -51,46 +51,69 @@ router.get(`/isin/`, (req, res) => {
         }).catch(err => {
             res.status(500).json({ msg: `Server Error!`, err });
         })
-    });
+});
 
-    // GET one Conversation
-    router.get(`/:id`, (req, res) => {
-        Conversation.findByPk(req.params.id, {
-            include: [User]
-        }).then(dbConversation => {
-            if (!dbConversation) {
-                return res.status(404).json(`No Conversation exists!`)
-            }
-            res.json(dbConversation)
-        }).catch(err => {
-            res.status(500).json({ msg: `Server Error!`, err });
-            console.log(err);
-        })
+// GET one Conversation
+router.get(`/:id`, (req, res) => {
+    Conversation.findByPk(req.params.id, {
+        include: [User]
+    }).then(dbConversation => {
+        if (!dbConversation) {
+            return res.status(404).json(`No Conversation exists!`)
+        }
+        res.json(dbConversation)
+    }).catch(err => {
+        res.status(500).json({ msg: `Server Error!`, err });
+        console.log(err);
     })
+})
 
-    // CREATE new Conversation
-    router.post(`/`, userAuth, (req, res) => {
-        Conversation.create({
-            ownerId: req.session.user.id,
-            conversation_name: req.body.conversationName
-        }).then(dbConversations => {
-            res.json(dbConversations)
-        }).catch(err => {
-            res.status(500).json({ msg: `Server error!`, err });
-        })
-    });
+// CREATE new Conversation
+router.post(`/`, userAuth, (req, res) => {
+    Conversation.create({
+        ownerId: req.session.user.id,
+        conversation_name: req.body.conversationName
+    }).then(dbConversations => {
+        res.json(dbConversations)
+    }).catch(err => {
+        res.status(500).json({ msg: `Server error!`, err });
+    })
+});
 
-    // DELETE conversation
-    router.delete(`/:id`, userAuth, (req, res) => {
-        Conversation.destroy({
-            where: {
-                id: req.params.id
+// DELETE conversation
+router.delete(`/:id`, userAuth, (req, res) => {
+    Conversation.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(dbConversation => {
+        res.json(dbConversation)
+    }).catch(err => {
+        res.status(500).json({ msg: `Server error!`, err })
+    })
+});
+
+// ADD user to conversation
+router.post(`/addUser`, (req, res) => {
+    User.findByPk(req.body.userId)
+        .then(dbUser => {
+            if (!dbUser) {
+                return res.status(404).json({ msg: `User not found` });
             }
-        }).then(dbConversation => {
-            res.json(dbConversation)
+            return Conversation.findByPk(req.body.conversationId)
+                .then(dbConversation => {
+                    if (!dbConversation) {
+                        return res.status(404).json({ msg: `Conversation not found` });
+                    }
+                    return dbConversation.addParticipant(dbUser)
+                        .then(()=> {
+                            res.json({msg: `User added to conversation`})
+                        })
+                })
         }).catch(err => {
-            res.status(500).json({ msg: `Server error!`, err })
+            console.error(err);
+            res.status(500).json({msg: `Server error`, err});
         })
-    });
+})
 
-    module.exports = router;
+module.exports = router;
