@@ -72,7 +72,7 @@ router.get(`/:id`, (req, res) => {
 router.post(`/`, userAuth, (req, res) => {
     Conversation.create({
         ownerId: req.session.user.id,
-        conversation_name: req.body.conversationName
+        conversation_name: req.body.conversation_name
     }).then(dbConversations => {
         res.json(dbConversations)
     }).catch(err => {

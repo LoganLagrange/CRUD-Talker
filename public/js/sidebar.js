@@ -8,6 +8,8 @@ const logoutBtn = document.getElementById(`logout-btn`);
 // const chatContainer = document.getElementById(`chat-container`);
 const chatMessages = document.getElementById(`chat-messages`);
 const chatPageLogo = document.getElementById(`chat-page-logo`);
+const newConvoForm =  document.getElementById(`new-convo-form`);
+const ConvoInput = document.getElementById(`convo-input`);
 
 // set chat container to not display by default
 chatMessages.style.display = `none`;
@@ -280,6 +282,30 @@ function deleteConversation(convId) {
             "Content-Type": "application/json",
         },
 
+    }).then(res => res.json())
+        .then(res => {
+            location.reload();
+        }).catch(err => {
+            console.error(err);
+        });
+}
+
+newConvoForm.addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    createConversation(ConvoInput.value);
+});
+function createConversation(conversationName) {
+    console.log(conversationName);
+    const otherUrl = `http://localhost:3000/api/conversations`
+    const requestBody = {
+        conversation_name:conversationName
+    }
+    fetch(otherUrl, {
+        method: `POST`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
     }).then(res => res.json())
         .then(res => {
             location.reload();
