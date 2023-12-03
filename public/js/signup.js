@@ -99,8 +99,10 @@ function loginFunc(username, password){
         body: JSON.stringify(user),
     }).then(res => res.json())
     .then(res => {
+        const userId = res.userId;
         const newUrl = `http://localhost:3000/`
         window.location.href = newUrl;
+        sessionStorage.setItem(`userId`, userId);
     }) .catch(err => {
         console.error(err);
     });
