@@ -294,11 +294,11 @@ newConvoForm.addEventListener(`submit`, (e) => {
     e.preventDefault();
     createConversation(ConvoInput.value);
 });
-function createConversation(conversationName) {
-    console.log(conversationName);
+function createConversation(conversation_name) {
+    console.log(conversation_name);
     const otherUrl = `http://localhost:3000/api/conversations`
     const requestBody = {
-        conversation_name:conversationName
+        conversation_name:conversation_name
     }
     fetch(otherUrl, {
         method: `POST`,
