@@ -76,3 +76,17 @@ html {
 #new-convo-form, #convo-input{
     max-width: 88%;
 }
+
+#sidebar {
+    min-height: 95vh;
+    min-width: 200px;
+    position: fixed;
+    left: 0;
+}
+
+#main-container {
+    max-height: 95vh;
+    position: absolute;
+    min-width: 55vw;
+    
+}
