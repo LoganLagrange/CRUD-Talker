@@ -17,7 +17,11 @@ router.get(`/inconvo/:id`, (req,res) => {
     Message.findAll({
         where: {
             conversationId: req.params.id
-        }
+        },
+        include:[{
+            model: User,
+            attributes: [`username`],
+        }]
     }).then(dbConversation => {
         const userId = req.session.user.id
         console.log(userId)

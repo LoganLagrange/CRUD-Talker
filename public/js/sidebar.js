@@ -134,7 +134,7 @@ function renderMessages(chats, userId) {
             } else {
                 yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
             }
-            yourMessagesLi.textContent = `${item.content}`
+            yourMessagesLi.innerHTML = `<strong>${item.user.username}</strong> <br>${item.content}`
             chatUl.appendChild(yourMessagesLi);
         });
     }
