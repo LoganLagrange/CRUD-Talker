@@ -72,8 +72,7 @@ function conversationClick(conversationName, roomId, ownerId) {
     const socket = socketSetup(roomId);
     // creates event listener on the chat form calls submit form function
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
-    const currentSession = sessionStorage.getItem(`UserId`)
-    if(ownerId == currentSession) {
+    if(ownerId == currentSess) {
         deleteConvBtn.style.display = `inline-block`
     }
 }
@@ -256,11 +255,11 @@ function renderOtherChats(chats) {
     console.log(chats)
     if (chats) {
         chats.forEach(item => {
-            if (item.ownerId != currentSess) {
+            if (item.owner_id != currentSess) {
                 const otherChatsLi = document.createElement(`li`);
                 otherChatsLi.textContent = `${item.conversation_name}`
                 otherChatsLi.classList.add(`conversation-li`, `box`, `p-3`, `m-2`);
-                otherChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id));
+                otherChatsLi.addEventListener('click', () => conversationClick(item.conversation_name, item.id, item.owner_id));
                 otherChatsUl.appendChild(otherChatsLi);
             }
         });
