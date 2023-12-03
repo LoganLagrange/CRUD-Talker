@@ -304,9 +304,14 @@ function deleteConversation(convId) {
 }
 
 
-newConvoForm.addEventListener(`submit`, (e) => {
+newConvoForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    createConversation(ConvoInput.value);
+    const conversationName = ConvoInput.value.trim(); // Trim to remove any leading/trailing white spaces
+    if (conversationName === '') {
+        alert('Conversation name cannot be empty!'); //alert if the name is empty
+    } else {
+        createConversation(conversationName); // Proceed with creation if name is not empty
+    }
 });
 function createConversation(conversation_name) {
     console.log(conversation_name);
@@ -330,7 +335,7 @@ function createConversation(conversation_name) {
     
 // event listener for add user form
 addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
-
+e.preventDefault();
 function addUser(username) {
     const otherUrl = `http://localhost:3000/api/conversations/addUser`
     const requestBody = {
