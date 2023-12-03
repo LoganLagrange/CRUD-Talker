@@ -5,7 +5,7 @@ const chatUl = document.getElementById(`chat-ul`);
 const chatInput = document.getElementById(`chat-input`);
 const chatForm = document.getElementById(`chat-form`);
 const logoutBtn = document.getElementById(`logout-btn`);
-// const chatContainer = document.getElementById(`chat-container`);
+const addUserForm =  document.getElementById(`add-user-form`)
 const chatMessages = document.getElementById(`chat-messages`);
 const chatPageLogo = document.getElementById(`chat-page-logo`);
 
@@ -277,6 +277,25 @@ function deleteConversation(convId) {
     const otherUrl = `http://localhost:3000/api/conversations/${convId}`
     fetch(otherUrl, {
         method: `DELETE`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+    }).then(res => res.json())
+        .then(res => {
+            location.reload();
+        }).catch(err => {
+            console.error(err);
+        });
+}
+
+// event listener for add user form
+addUserForm.addEventListener(`submit`, () => );
+
+function addUser(username) {
+    const otherUrl = `http://localhost:3000/api/conversations/new`
+    fetch(otherUrl, {
+        method: `POST`,
         headers: {
             "Content-Type": "application/json",
         },
