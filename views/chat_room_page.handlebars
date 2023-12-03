@@ -35,7 +35,13 @@
 
             <div class="p-3 box" id="conversation-name-box">
                 <h3 id="conversation-name-heading"></h3>
-                <button class=" button is-danger fas fa-trash-alt" id="delete-conv-btn"></button>
+                <div class="buttons">
+                    <form action="" id="add-user-form" class="is-flex is-align-items-center">
+                        <input type="text" id="username-input" placeholder="Add user">
+                        <button type="submit" class="button is-success fas fa-user-plus m-1" id="add-user-btn"></button>
+                    </form>
+                    <button class=" button is-danger fas fa-trash-alt m-1" id="delete-conv-btn"></button>
+                </div>
             </div>
 
             <div class="chat-messages" id="chat-container">>

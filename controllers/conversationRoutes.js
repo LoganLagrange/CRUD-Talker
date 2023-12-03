@@ -95,8 +95,9 @@ router.delete(`/:id`, userAuth, (req, res) => {
 
 // ADD user to conversation
 router.post(`/addUser`, (req, res) => {
-    User.findByPk(req.body.userId)
-        .then(dbUser => {
+    User.findOne({
+        where: {username: req.body.username}
+    }).then(dbUser => {
             if (!dbUser) {
                 return res.status(404).json({ msg: `User not found` });
             }
