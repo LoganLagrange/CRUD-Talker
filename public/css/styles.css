@@ -84,8 +84,13 @@ html {
     left: 0;
 }
 
-#main-container {
-    max-height: 95vh;
-    min-width: 55vw;
-    
+
+@media screen and (max-width:769px) {
+    #main-container {
+        max-height: 95vh;
+        min-width: 55vw;
+    }
+    img {
+        width:100px;
+    }
 }
