@@ -327,8 +327,11 @@ function createConversation(conversation_name) {
     }
     
 // event listener for add user form
-addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
-e.preventDefault();
+addUserForm.addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    addUser(usernameInput.value);
+});
+
 function addUser(username) {
     const requestBody = {
         username: username,

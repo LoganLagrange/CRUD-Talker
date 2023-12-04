@@ -83,7 +83,6 @@ function signup(newUserData){
 // Login function
 // Issues post request to server to log user in (create session variables), also refreshes page to chat page
 function loginFunc(username, password){
-    
     const user = {
         username: username,
         password: password
@@ -96,10 +95,13 @@ function loginFunc(username, password){
         body: JSON.stringify(user),
     }).then(res => res.json())
     .then(res => {
+        console.log(res.username);
+        const username = res.username;
         const userId = res.userId;
-        const newUrl = `http://localhost:3000/`
+        const newUrl = `/`
         window.location.href = newUrl;
         sessionStorage.setItem(`userId`, userId);
+        sessionStorage.setItem(`username`, username)
     }) .catch(err => {
         console.error(err);
     });
