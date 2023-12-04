@@ -172,13 +172,14 @@ function socketSetup(roomId) {
 // renders messages recieved by socket live onto the page
 function renderLive(msg, socketSenderId) {
     const currentSessionId = sessionStorage.getItem(`userId`);
+    const currentUsername = sessionStorage.getItem(`username`);
     const chatLi = document.createElement(`li`);
-    chatLi.textContent = `${msg}`
     if (socketSenderId === currentSessionId) {
         chatLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
     } else {
         chatLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
     }
+    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg.content}`
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
 

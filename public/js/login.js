@@ -40,6 +40,7 @@ function loginFunc(username, password){
         const newUrl = `/`
         window.location.href = newUrl;
         sessionStorage.setItem(`userId`, userId);
+        sessionStorage.setItem(`username`, username)
     }) .catch(err => {
         // logs and displays error or bad status code
         console.error(err);

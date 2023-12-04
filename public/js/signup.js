@@ -101,7 +101,7 @@ function loginFunc(username, password){
         const newUrl = `/`
         window.location.href = newUrl;
         sessionStorage.setItem(`userId`, userId);
-        sessionStorage.setItem(`username`, username)
+        sessionStorage.setItem(`username`, username);
     }) .catch(err => {
         console.error(err);
     });
