@@ -14,6 +14,7 @@ const chatPageLogo = document.getElementById(`chat-page-logo`);
 const newConvoForm =  document.getElementById(`new-convo-form`);
 const ConvoInput = document.getElementById(`convo-input`);
 const usernameInput = document.getElementById(`username-input`);
+const chatContainer = document.getElementById(`chat-container`);
 
 // set chat container to not display by default
 chatMessages.style.display = `none`;
@@ -128,12 +129,13 @@ function renderMessages(chats, userId) {
             const yourMessagesLi = document.createElement(`li`);
             console.log(`message userId: ${item.userId}`)
             if (sessionId == item.userId) {
-                yourMessagesLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
+                yourMessagesLi.classList.add(`outgoingMsg`, `column`, `box`);
             } else {
-                yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
+                yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`);
             }
             yourMessagesLi.innerHTML = `<strong>${item.user.username}</strong> <br>${item.content}`
             chatUl.appendChild(yourMessagesLi);
+            yourMessagesLi.scrollIntoView(true);
         });
     }
 }
@@ -175,14 +177,14 @@ function renderLive(msg, socketSenderId) {
     const currentUsername = sessionStorage.getItem(`username`);
     const chatLi = document.createElement(`li`);
     if (socketSenderId === currentSessionId) {
-        chatLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
+        chatLi.classList.add(`outgoingMsg`, `column`, `box`);
     } else {
-        chatLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
+        chatLi.classList.add(`incomingMsg`, `column`, `box`);
     }
-    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg.content}`
+    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg}`
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
-
+    chatLi.scrollIntoView(true);
 }
 
 // send message function
