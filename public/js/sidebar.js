@@ -63,23 +63,24 @@ function renderYourChats(chats) {
 }
 
 let currentConversationId;
+let lastConvo;
 // Event handler for clicking on the conversation
 // DO NOT REMOVE UNUSED CONVERSATION ID, will break for witchcraft reasons
 function conversationClick(conversationName, roomId, ownerId) {
     currentConversationId = roomId;
+    lastConvo = roomId;
     // set chat container to show up when conversation is clicked
     chatPageLogo.style.display = `none`;
     chatMessages.style.display = `block`;
     chatForm.style.display = `block`;
-
     console.log(`roomId:` + roomId);
     conversationNameHeading.textContent = conversationName;
     // calls fetch messages function
     fetchMessages(roomId);
     // calls socket setup function
-    socket = socketSetup(roomId);
+    socket = socketSetup(roomId, lastConvo);
     // creates event listener on the chat form calls submit form function
-    chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
+    
     if (ownerId == currentSess) {
         deleteConvBtn.style.display = `inline-block`
     } else {
@@ -87,11 +88,12 @@ function conversationClick(conversationName, roomId, ownerId) {
     }
 }
 
+chatForm.addEventListener(`submit`, (e) => submitForm(e, currentConversationId, socket));
 // submit form function
 // calls save message function
 function submitForm(e, roomId, socket) {
     e.preventDefault();
-    chatForm.removeEventListener(`submit`, submitForm);
+    
     saveMessage(chatInput.value, roomId, socket)
 }
 
@@ -144,7 +146,7 @@ function renderMessages(chats, userId) {
 let socket;
 // socket setup function
 // sets up socket initialization
-function socketSetup(roomId) {
+function socketSetup(roomId, lastConvo) {
     if (!socket) {
         socket = io(window.location.origin);
 
@@ -154,6 +156,7 @@ function socketSetup(roomId) {
         });
 
         // Event listener for room joining
+        socket.off(`join room`);
         socket.on(`join room`, (room) => {
             console.log(`joined room: `, room);
         });
@@ -165,10 +168,10 @@ function socketSetup(roomId) {
             // Display the message on the page
             renderLive(msg, socketSenderId);
         });
-
-        // Emit the 'join room' event
-        socket.emit(`join room`, roomId);
     }
+        // Emit the 'join room' event
+        socket.emit(`join room`, roomId, lastConvo);
+    
     return socket;
 }
 
