@@ -82,10 +82,11 @@ html {
     min-width: 200px;
     position: fixed;
     left: 0;
+    overflow-y: auto;
 }
 
 #main-container {
     max-height: 95vh;
     min-width: 55vw;
-    
+
 }

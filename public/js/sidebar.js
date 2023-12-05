@@ -14,6 +14,7 @@ const chatPageLogo = document.getElementById(`chat-page-logo`);
 const newConvoForm =  document.getElementById(`new-convo-form`);
 const ConvoInput = document.getElementById(`convo-input`);
 const usernameInput = document.getElementById(`username-input`);
+const chatContainer = document.getElementById(`chat-container`);
 
 // set chat container to not display by default
 chatMessages.style.display = `none`;
@@ -81,6 +82,8 @@ function conversationClick(conversationName, roomId, ownerId) {
     chatForm.addEventListener(`submit`, (e) => submitForm(e, roomId, socket));
     if (ownerId == currentSess) {
         deleteConvBtn.style.display = `inline-block`
+    } else {
+        deleteConvBtn.style.display = `none`
     }
 }
 
@@ -128,12 +131,13 @@ function renderMessages(chats, userId) {
             const yourMessagesLi = document.createElement(`li`);
             console.log(`message userId: ${item.userId}`)
             if (sessionId == item.userId) {
-                yourMessagesLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
+                yourMessagesLi.classList.add(`outgoingMsg`, `column`, `box`);
             } else {
-                yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
+                yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`);
             }
             yourMessagesLi.innerHTML = `<strong>${item.user.username}</strong> <br>${item.content}`
             chatUl.appendChild(yourMessagesLi);
+            yourMessagesLi.scrollIntoView(true);
         });
     }
 }
@@ -172,16 +176,17 @@ function socketSetup(roomId) {
 // renders messages recieved by socket live onto the page
 function renderLive(msg, socketSenderId) {
     const currentSessionId = sessionStorage.getItem(`userId`);
+    const currentUsername = sessionStorage.getItem(`username`);
     const chatLi = document.createElement(`li`);
-    chatLi.textContent = `${msg}`
     if (socketSenderId === currentSessionId) {
-        chatLi.classList.add(`outgoingMsg`, `column`, `box`, `is-1`);
+        chatLi.classList.add(`outgoingMsg`, `column`, `box`);
     } else {
-        chatLi.classList.add(`incomingMsg`, `column`, `box`, `is-1`);
+        chatLi.classList.add(`incomingMsg`, `column`, `box`);
     }
+    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg}`
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
-
+    chatLi.scrollIntoView(true);
 }
 
 // send message function
@@ -327,8 +332,11 @@ function createConversation(conversation_name) {
     }
     
 // event listener for add user form
-addUserForm.addEventListener(`submit`, () => addUser(usernameInput.value));
-e.preventDefault();
+addUserForm.addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    addUser(usernameInput.value);
+});
+
 function addUser(username) {
     const requestBody = {
         username: username,
