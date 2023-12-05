@@ -68,6 +68,12 @@ html {
     color: white;
 }
 
+.conversation-li:hover {
+    background-color: #519bd7;
+    color: white;
+    cursor: pointer;
+}
+
 .convo-h {
     color: var(--logo-dark-blue);
     font-weight: bold;
