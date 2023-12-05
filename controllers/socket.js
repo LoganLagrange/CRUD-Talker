@@ -2,7 +2,12 @@ module.exports = function (io) {
     io.on('connection', (socket) => {
         console.log('A user connected');
 
-        socket.on(`join room`, (roomId) => {
+        socket.on(`join room`, (roomId, lastConvo) => {
+            if (lastConvo) {
+                socket.leave(lastConvo);
+                console.log(`socket left room ${roomId}`)
+                console.log(lastConvo);
+            }
             socket.join(roomId);
             console.log(`User joined room: ${roomId}`);
             socket.emit(`join room`, roomId);
