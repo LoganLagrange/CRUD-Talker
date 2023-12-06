@@ -51,7 +51,8 @@ router.post(`/`,(req,res) => {
     Message.create({
         content:req.body.content,
         userId:req.session.user.id,
-        conversationId:req.body.conversation_id
+        conversationId:req.body.conversation_id,
+        nice_date: req.body.nice_date
     }).then(dbMessages => {
         res.json(dbMessages)
     }).catch(err => {

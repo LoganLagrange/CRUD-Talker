@@ -32,7 +32,8 @@ const messageData = [
     {
         content: `Hello everyone`,
         user_id: 1,
-        conversation_id: 1
+        conversation_id: 1,
+        nice_date: `2023-12-05 09:32:00`
     }
 ]
 

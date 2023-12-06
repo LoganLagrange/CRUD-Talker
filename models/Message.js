@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, DECIMAL } = require('sequelize');
 const sequelize = require('../config/connection');
 
 class Message extends Model {}
@@ -13,6 +13,10 @@ Message.init(
     },
     content: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    nice_date: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     conversation_id: {

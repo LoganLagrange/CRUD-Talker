@@ -93,8 +93,9 @@ chatForm.addEventListener(`submit`, (e) => submitForm(e, currentConversationId, 
 // calls save message function
 function submitForm(e, roomId, socket) {
     e.preventDefault();
-    
-    saveMessage(chatInput.value, roomId, socket)
+    const currentDay = dayjs();
+    const currentDayFormatted = currentDay.format(`YYYY-MM-DD hh:mm:ss A`)
+    saveMessage(chatInput.value, roomId, socket, currentDayFormatted)
 }
 
 // fetch messages function
@@ -137,7 +138,7 @@ function renderMessages(chats, userId) {
             } else {
                 yourMessagesLi.classList.add(`incomingMsg`, `column`, `box`);
             }
-            yourMessagesLi.innerHTML = `<strong>${item.user.username}</strong> <br>${item.content}`
+            yourMessagesLi.innerHTML = `<strong>${item.user.username}</strong> <br>${item.content} <br><em>${item.nice_date}</em>`
             chatUl.appendChild(yourMessagesLi);
             yourMessagesLi.scrollIntoView(true);
         });
@@ -163,10 +164,10 @@ function socketSetup(roomId, lastConvo) {
 
         // Event listener for incoming messages
         socket.off(`chat message`);
-        socket.on(`chat message`, (msg, socketSenderId) => {
+        socket.on(`chat message`, (msg, socketSenderId, currentDayFormatted) => {
             console.log(`Message from server:`, msg, socketSenderId);
             // Display the message on the page
-            renderLive(msg, socketSenderId);
+            renderLive(msg, socketSenderId, currentDayFormatted);
         });
     }
         // Emit the 'join room' event
@@ -177,7 +178,7 @@ function socketSetup(roomId, lastConvo) {
 
 // renderlive function
 // renders messages recieved by socket live onto the page
-function renderLive(msg, socketSenderId) {
+function renderLive(msg, socketSenderId, currentDayFormatted) {
     const currentSessionId = sessionStorage.getItem(`userId`);
     const currentUsername = sessionStorage.getItem(`username`);
     const chatLi = document.createElement(`li`);
@@ -186,7 +187,7 @@ function renderLive(msg, socketSenderId) {
     } else {
         chatLi.classList.add(`incomingMsg`, `column`, `box`);
     }
-    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg}`
+    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg} <br><em>${currentDayFormatted}</em>`
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
     chatLi.scrollIntoView(true);
@@ -194,9 +195,9 @@ function renderLive(msg, socketSenderId) {
 
 // send message function
 // sends a message to the server
-function sendMessage(socket, message, conversationId, socketSessionId) {
+function sendMessage(socket, message, conversationId, socketSessionId, currentDayFormatted) {
     if (socket.connected) {
-        socket.emit(`chat message`, message, conversationId, socketSessionId);
+        socket.emit(`chat message`, message, conversationId, socketSessionId, currentDayFormatted);
         console.log(`message sent to server`, message);
     } else {
         console.log(`socket not connected`);
@@ -206,12 +207,14 @@ function sendMessage(socket, message, conversationId, socketSessionId) {
 
 // save messsage function
 // issues a post request to the server to save messages in the database
-function saveMessage(msg, conversationId, socket) {
+function saveMessage(msg, conversationId, socket, currentDayFormatted) {
     console.log(`roomId save message: ${conversationId}`);
     const socketSessionId = sessionStorage.getItem(`userId`);
+    
     const message = {
         content: msg,
-        conversation_id: conversationId
+        conversation_id: conversationId,
+        nice_date: currentDayFormatted
     }
 
     fetch(`/api/messages`, {
@@ -223,7 +226,7 @@ function saveMessage(msg, conversationId, socket) {
     }).then(res => res.json())
         .then(res => {
             // calls send message function
-            sendMessage(socket, msg, conversationId, socketSessionId);
+            sendMessage(socket, msg, conversationId, socketSessionId, currentDayFormatted);
         }).catch(err => {
             console.error(err);
         });
