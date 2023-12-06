@@ -209,9 +209,12 @@ function sendMessage(socket, message, conversationId, socketSessionId) {
 function saveMessage(msg, conversationId, socket) {
     console.log(`roomId save message: ${conversationId}`);
     const socketSessionId = sessionStorage.getItem(`userId`);
+    const currentDay = dayjs();
+    const currentDayFormatted = currentDay.format(`YYYY-MM-DD HH:mm:ss`)
     const message = {
         content: msg,
-        conversation_id: conversationId
+        conversation_id: conversationId,
+        nice_date: currentDayFormatted
     }
 
     fetch(`/api/messages`, {
