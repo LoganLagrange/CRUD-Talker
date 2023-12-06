@@ -26,10 +26,6 @@
     padding-bottom: 111px;
 }
 
-#chat-form {
-    display:flex;
-}
-
 .incomingMsg {
     border-radius: 20px 20px 20px 0px;
     align-self: flex-start;
@@ -50,9 +46,14 @@ html {
     height: 50vh;
     overflow-y: auto;
 }
-
+.conversation-li:hover {
+    background-color: #519BD7;
+    color: white;
+    cursor: pointer;
+}
 #conversation-name-box {
     display: flex;
+    flex-wrap:wrap;
     justify-content: space-between;
     align-items: center;
     background-color: var(--logo-dark-blue);
@@ -99,34 +100,72 @@ html {
     }
     #sidebar {
         min-height: 40vh;
-        min-width: 200px;
+        min-width: 40vh;
         left: 0;
         overflow-y: auto;
         margin:50px;
     }
     #main-container {
-        min-width:200px;
+        width:300px;
     }
-}
-    img {
+    button {
         max-width:100px;
     }
+    img {
+        width:100px;
+        display:flex;
+    }
+}
+    
 img {
     max-width:300px;
+    display:flex;
 }
 
 body {
-    font-size:1.25em;
+    font-size:16px;;
 }
 
 input[type=text] {
     padding: 0;
-    height: 30px;
+    height: 40px;
     position: relative;
     left: 0;
     outline: none;
     border: 1px solid #cdcdcd;
+    border-radius:5px 5px 5px 5px;
     border-color: rgba(0, 0, 0, .15);
     background-color: white;
     font-size: 16px;
   }
+
+#convo-input[type=text]{
+    padding: 0;
+    height: 40px;
+    position: relative;
+    left: 0;
+    outline: none;
+    border: 1px solid #cdcdcd;
+    border-radius:5px 5px 5px 5px;
+    border-color: rgba(0, 0, 0, .15);
+    background-color: white;
+    font-size: 16px;
+}
+
+#sendButton {
+    align-self:flex-end;
+}
+
+#chatBox {
+    background-color:var(--logo-dark-blue);
+    margin-bottom:0px;
+}
+
+.outgoingMsg
+.incomingMsg {
+    line-height:1px;
+}
+
+section {
+    display:flex;
+}
