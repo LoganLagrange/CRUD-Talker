@@ -17,9 +17,9 @@ module.exports = function (io) {
             console.log(`user disconnect`);
         })
 
-        socket.on(`chat message`, (msg, roomId, socketSessionId) => {
+        socket.on(`chat message`, (msg, roomId, socketSessionId, currentDayFormatted) => {
             console.log(`received message in room ${roomId}: ${msg}`)
-            io.to(roomId).emit(`chat message`, msg, socketSessionId);
+            io.to(roomId).emit(`chat message`, msg, socketSessionId, currentDayFormatted);
         })
 
         
