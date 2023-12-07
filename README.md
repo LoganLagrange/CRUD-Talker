@@ -8,7 +8,7 @@
 
 > CRUD-Talker is a no-frills, live chat application designed to support basic communication between members of a group. The application is built using socket.io, 
 
-### 🏠 [Homepage](https://crud-talker-98f5c894ae99.herokuapp.com/)
+### 🏠 [Homepage](https://crudtalker-a62963a0a4c5.herokuapp.com/)
 
 ## Features
 

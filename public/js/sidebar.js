@@ -164,10 +164,10 @@ function socketSetup(roomId, lastConvo) {
 
         // Event listener for incoming messages
         socket.off(`chat message`);
-        socket.on(`chat message`, (msg, socketSenderId, currentDayFormatted) => {
+        socket.on(`chat message`, (msg, socketSenderId, currentDayFormatted, senderUser) => {
             console.log(`Message from server:`, msg, socketSenderId);
             // Display the message on the page
-            renderLive(msg, socketSenderId, currentDayFormatted);
+            renderLive(msg, socketSenderId, currentDayFormatted, senderUser);
         });
     }
         // Emit the 'join room' event
@@ -178,7 +178,7 @@ function socketSetup(roomId, lastConvo) {
 
 // renderlive function
 // renders messages recieved by socket live onto the page
-function renderLive(msg, socketSenderId, currentDayFormatted) {
+function renderLive(msg, socketSenderId, currentDayFormatted, senderUser) {
     const currentSessionId = sessionStorage.getItem(`userId`);
     const currentUsername = sessionStorage.getItem(`username`);
     const chatLi = document.createElement(`li`);
@@ -187,7 +187,7 @@ function renderLive(msg, socketSenderId, currentDayFormatted) {
     } else {
         chatLi.classList.add(`incomingMsg`, `column`, `box`);
     }
-    chatLi.innerHTML = `<strong>${currentUsername}</strong> <br>${msg} <br><em>${currentDayFormatted}</em>`
+    chatLi.innerHTML = `<strong>${senderUser}</strong> <br>${msg} <br><em>${currentDayFormatted}</em>`
     chatUl.appendChild(chatLi);
     chatInput.value = ``;
     chatLi.scrollIntoView(true);
@@ -195,9 +195,9 @@ function renderLive(msg, socketSenderId, currentDayFormatted) {
 
 // send message function
 // sends a message to the server
-function sendMessage(socket, message, conversationId, socketSessionId, currentDayFormatted) {
+function sendMessage(socket, message, conversationId, socketSessionId, currentDayFormatted, senderUser) {
     if (socket.connected) {
-        socket.emit(`chat message`, message, conversationId, socketSessionId, currentDayFormatted);
+        socket.emit(`chat message`, message, conversationId, socketSessionId, currentDayFormatted, senderUser);
         console.log(`message sent to server`, message);
     } else {
         console.log(`socket not connected`);
@@ -210,6 +210,7 @@ function sendMessage(socket, message, conversationId, socketSessionId, currentDa
 function saveMessage(msg, conversationId, socket, currentDayFormatted) {
     console.log(`roomId save message: ${conversationId}`);
     const socketSessionId = sessionStorage.getItem(`userId`);
+    const senderUser = sessionStorage.getItem(`username`);
     
     const message = {
         content: msg,
@@ -226,7 +227,7 @@ function saveMessage(msg, conversationId, socket, currentDayFormatted) {
     }).then(res => res.json())
         .then(res => {
             // calls send message function
-            sendMessage(socket, msg, conversationId, socketSessionId, currentDayFormatted);
+            sendMessage(socket, msg, conversationId, socketSessionId, currentDayFormatted, senderUser);
         }).catch(err => {
             console.error(err);
         });
